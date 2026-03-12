@@ -5,6 +5,17 @@ lang:   en
 ---
 
 
+# Planning a resource application
+
+
+# Performance properties
+
+
+# General workflows
+
+
+
+
 # Code deployment and production
 
 <div class=column>
