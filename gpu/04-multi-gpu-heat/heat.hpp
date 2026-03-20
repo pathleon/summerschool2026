@@ -28,6 +28,8 @@ struct ParallelData {
 };
 
 // Class for temperature field
+
+template <storage_spec mem_location>
 struct Field {
     // nx and ny are the true dimensions of the field. The temperature matrix
     // contains also ghost layers, so it will have dimensions nx+2 x ny+2
@@ -38,7 +40,7 @@ struct Field {
     double dx = 0.01;           // Grid spacing
     double dy = 0.01;
 
-    Matrix<double> temperature;
+    Matrix<double, mem_location> temperature;
 
     void setup(int nx_in, int ny_in, ParallelData parallel);
 

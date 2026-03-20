@@ -3,7 +3,8 @@
 #include <iostream>
 #include <mpi.h>
 
-void Field::setup(int nx_in, int ny_in, ParallelData parallel)
+template <storage_spec mem_location>
+void Field::setup(int nx_in, int ny_in, ParallelData parallel, storage_spec storage_location)
 {
     nx_full = nx_in;
     ny_full = ny_in;
@@ -16,11 +17,11 @@ void Field::setup(int nx_in, int ny_in, ParallelData parallel)
     ny = ny_full;
 
    // matrix includes also ghost layers
-   temperature = Matrix<double> (nx + 2, ny + 2);
+   temperature = Matrix<double, mem_location> (nx + 2, ny + 2);
 }
 
-void Field::generate(ParallelData parallel) {
-
+void Field<HOST_ONLY>::generate(ParallelData parallel) 
+{
     // Radius of the source disc
     auto radius = nx_full / 6.0;
     for (int i = 0; i < nx + 2; i++) {

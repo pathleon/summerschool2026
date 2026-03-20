@@ -6,6 +6,7 @@
 
 #pragma once
 
+#include<cstdio>
 #include <hip/hip_runtime.h>
 
 #define HIP_ERRCHK(result) hip_errchk(result, __FILE__, __LINE__)
@@ -18,6 +19,7 @@ static inline void hip_errchk(hipError_t result, const char *file,
     }
 }
 
+#if 0
 #define LAUNCH_KERNEL(kernel, ...)                                             \
     launch_kernel(#kernel, __FILE__, __LINE__, kernel, __VA_ARGS__)
 template <typename... Args>
@@ -127,3 +129,4 @@ void launch_kernel(const char *kernel_name, const char *file, int32_t line,
     }
 #endif
 }
+#endif
