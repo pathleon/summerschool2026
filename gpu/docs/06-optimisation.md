@@ -76,20 +76,20 @@ float ms = (stop - start) * 1e3;
 $ rocprofv3 ... --summary
 ROCPROFV3 SUMMARY:
 
-|                   NAME                   |     DOMAIN      |      CALLS      | DURATION (nsec) | AVERAGE (nsec)  | PERCENT (INC) |   MIN (nsec)    |   MAX (nsec)    |     STDDEV      |
-|------------------------------------------|-----------------|-----------------|-----------------|-----------------|---------------|-----------------|-----------------|-----------------|
-| hipLaunchKernel                          | HIP_API         |               4 |       434203887 |       1.086e+08 |     66.945517 |            4700 |       434182684 |       2.171e+08 |
-| hipDeviceSynchronize                     | HIP_API         |               4 |        85300133 |       2.133e+07 |     13.151567 |        12483534 |        29194539 |       8.923e+06 |
-| hipMalloc                                | HIP_API         |               1 |        44015742 |       4.402e+07 |      6.786343 |        44015742 |        44015742 |       0.000e+00 |
-| ternary_kernel(double*, int)             | KERNEL_DISPATCH |               1 |        29183576 |       2.918e+07 |      4.499521 |        29183576 |        29183576 |       0.000e+00 |
-| divergence_kernel(double*, int)          | KERNEL_DISPATCH |               1 |        28497647 |       2.850e+07 |      4.393765 |        28497647 |        28497647 |       0.000e+00 |
-| no_divergence_kernel(double*, int)       | KERNEL_DISPATCH |               1 |        14787390 |       1.479e+07 |      2.279919 |        14787390 |        14787390 |       0.000e+00 |
-| singlebranch_kernel(double*, int)        | KERNEL_DISPATCH |               1 |        12472800 |       1.247e+07 |      1.923055 |        12472800 |        12472800 |       0.000e+00 |
-| hipFree                                  | HIP_API         |               1 |          108380 |       1.084e+05 |      0.016710 |          108380 |          108380 |       0.000e+00 |
-| __hipRegisterFatBinary                   | HIP_API         |               1 |            9819 |       9.819e+03 |      0.001514 |            9819 |            9819 |       0.000e+00 |
-| __hipPushCallConfiguration               | HIP_API         |               4 |            6513 |       1.628e+03 |      0.001004 |             100 |            5431 |       2.556e+03 |
-| __hipRegisterFunction                    | HIP_API         |               4 |            5250 |       1.312e+03 |      0.000809 |             260 |            4148 |       1.894e+03 |
-| __hipPopCallConfiguration                | HIP_API         |               4 |            1784 |       4.460e+02 |      0.000275 |              90 |             871 |       3.994e+02 |
+|                   NAME                   |     DOMAIN      | CALLS | DURATION (nsec) | AVERAGE (nsec)  | PERCENT (INC) | MIN (nsec) | MAX (nsec) |
+|------------------------------------------|-----------------|-------|-----------------|-----------------|---------------|------------|------------|
+| hipLaunchKernel                          | HIP_API         |     4 |       434203887 |       1.086e+08 |     66.945517 |       4700 |  434182684 |
+| hipDeviceSynchronize                     | HIP_API         |     4 |        85300133 |       2.133e+07 |     13.151567 |   12483534 |   29194539 |
+| hipMalloc                                | HIP_API         |     1 |        44015742 |       4.402e+07 |      6.786343 |   44015742 |   44015742 |
+| ternary_kernel(double*, int)             | KERNEL_DISPATCH |     1 |        29183576 |       2.918e+07 |      4.499521 |   29183576 |   29183576 |
+| divergence_kernel(double*, int)          | KERNEL_DISPATCH |     1 |        28497647 |       2.850e+07 |      4.393765 |   28497647 |   28497647 |
+| no_divergence_kernel(double*, int)       | KERNEL_DISPATCH |     1 |        14787390 |       1.479e+07 |      2.279919 |   14787390 |   14787390 |
+| singlebranch_kernel(double*, int)        | KERNEL_DISPATCH |     1 |        12472800 |       1.247e+07 |      1.923055 |   12472800 |   12472800 |
+| hipFree                                  | HIP_API         |     1 |          108380 |       1.084e+05 |      0.016710 |     108380 |     108380 |
+| __hipRegisterFatBinary                   | HIP_API         |     1 |            9819 |       9.819e+03 |      0.001514 |       9819 |       9819 |
+| __hipPushCallConfiguration               | HIP_API         |     4 |            6513 |       1.628e+03 |      0.001004 |        100 |       5431 |
+| __hipRegisterFunction                    | HIP_API         |     4 |            5250 |       1.312e+03 |      0.000809 |        260 |       4148 |
+| __hipPopCallConfiguration                | HIP_API         |     4 |            1784 |       4.460e+02 |      0.000275 |         90 |        871 |
 
 ```
 </small>
@@ -571,7 +571,7 @@ if ( (tid%2) == 0) {
 ---
 
  
-# 4. Avoid branching within warps
+# 4. Avoid branching within warp
 
 
 ::::::{.columns}
