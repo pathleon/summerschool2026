@@ -114,6 +114,10 @@ ROCPROFV3 SUMMARY:
 | A100 (Mahti) |  | 2000 GB/s |
 | GH200(Roihu) | 450GB/s | 4 TB/s |
 
+- Matrix multiplication $C = A \times B$ with 10000 x 10000 matrices in LUMI:
+    - Host-to-device memory copies: 0.07 s
+    - Computation: 0.04 s
+
 ::: notes
 
 - Be afraid of host-device memory copies!
