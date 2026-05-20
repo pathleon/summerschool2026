@@ -11,7 +11,6 @@
 - [Catching API errors](02-kernels-api-errors)
 - [Fill kernel](02-kernels-fill)
 - [Taylor for](02-kernels-taylor-for)
-- [Copy2d](02-kernels-copy2d)
 
 ## Monday exercises
 
@@ -51,7 +50,7 @@
 ## Bonus exercises
 
 - [Basics of HIP: Debugging & fixing errors](02-kernels-kernel-errors)
-- [Basics of HIP: Copy 2D kernel](02-kernels-copy2d)
+- [Basics of HIP: 2D Copy with double for loop](02-kernels-copy2d)
 - [Optimization: Matrix transpose](06-optimization-matrix-transpose)
 - [OpenMP offloading: Heat equation](07-openmp-heat-equation)
 - [OpenMP offloading: Interoperability with HIP](07-openmp-hip-interop)
