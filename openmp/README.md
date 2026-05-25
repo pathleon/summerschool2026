@@ -29,6 +29,8 @@ See [exercises directory](exercises/) for exercises.
 
 ## Web resources
 
-- OpenMP specifications
-  - <https://www.openmp.org/specifications/>
-  - See in particular the examples documents that provide many practical examples of use; the API specification is rather technical
+- OpenMP homepage: <http://openmp.org/>
+- Online tutorials: <http://openmp.org/wp/resources/#Tutorials>
+- Specifications and examples: <https://www.openmp.org/specifications/>
+  - [v5.2 API Specification](https://www.openmp.org/wp-content/uploads/OpenMP-API-Specification-5-2.pdf)
+  - [v5.2.2 Examples document](https://www.openmp.org/wp-content/uploads/openmp-examples-5.2.2-final.pdf)
