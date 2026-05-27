@@ -48,9 +48,10 @@ SPDX-License-Identifier: CC-BY-4.0
 
 ### Multi-GPU programming
 
-- [Ping-pong with multiple GPUs and MPI](09-multi-gpu-ping-pong)
-- [Vector sum on two GPUs without MPI](09-multi-gpu-vector-sum)
-- [Peer to peer device access](09-multi-gpu-p2pcopy)
+- [Hello world](09-multi-gpu-hello)
+- [Ping-pong](09-multi-gpu-ping-pong)
+- [Overlapping computation and communication](09-multi-gpu-overlap)
+- [Bonus: Multi-GPU heat equation](09-multi-gpu-heat-equation)
 
 ## Bonus exercises
 
@@ -60,5 +61,6 @@ SPDX-License-Identifier: CC-BY-4.0
 - [OpenMP offloading: Heat equation](07-openmp-heat-equation)
 - [OpenMP offloading: Interoperability with HIP](07-openmp-hip-interop)
 - [OpenMP offloading: Jacobi](07-openmp-jacobi)
+- [Multi-GPU heat equation](09-multi-gpu-heat-equation)
 
 
