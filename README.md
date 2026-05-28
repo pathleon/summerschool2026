@@ -48,11 +48,11 @@ The slides are available [here](https://csc-training.github.io/summerschool/).
 | Time  | Topic |
 | ----  | ----- |
 | 07:45 | Breakfast
-| 09:00 | [MPI: Introduction](mpi)
+| 09:00 | [MPI: Point-to-point communication I](mpi)
 | 12:00 | Lunch
-| 13:00 | [MPI: Point-to-point communication I](mpi)
+| 13:00 | [MPI: Point-to-point communication II](mpi)
 | 15:00 | Refreshments (available until 17:00)
-| 15:30 | [MPI: Point-to-point communication II](mpi)
+| 15:30 | [MPI: Nonblocking communication](mpi)
 | 16:30 | Outdoor activity: Nuuksio Olympic Games (meetup at the Hotel lobby)
 | 18:00 | Dinner (available until 20:00)
 | 19:00 | Exercises (optional)
