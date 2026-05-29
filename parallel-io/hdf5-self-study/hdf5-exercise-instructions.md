@@ -5,7 +5,7 @@ In order to compile and run the HDF5 code examples and exercises you must have a
 ## HDF5 on CSC systems
 
 - Lumi:
-    1. `module load cray-hdf5-parallel/1.12.2.11`
+    1. `module load cray-hdf5-parallel`
     2. Compile with the Cray compiler wrapper `cc` as usual. No special compilation flags needed, the wrapper handles those automatically.
 - Mahti:
     1. `module load hdf5/1.10.7-mpi`
