@@ -242,11 +242,11 @@ The most popular I/O libraries in HPC are **`HDF5`** and **`netCDF`**.
     - In practice, dataset = multidimensional array
 
 <div class="column">
-![](img/hdf5_structure.png)
+![](../hdf5-self-study/img/hdf5_structure.png)
 </div>
 
 <div class="column">
-![](img/hdf5.png)
+![](../hdf5-self-study/img/hdf5_dataset.png)
 </div>
 
 
@@ -259,7 +259,7 @@ The most popular I/O libraries in HPC are **`HDF5`** and **`netCDF`**.
 import h5py
 myFile = h5py.File("some_file.hdf5", 'r') # Behaves like a Python dict
 dataset_names = list(myFile .keys())
-dataset = myFile['some_dataset']         # Behaves like a NumPy array
+dataset = myFile['some_dataset']          # Behaves like a NumPy array
 ```
 
 - HDF5 I/O is supported by many scientific software (`Paraview`, `Matlab`, ...)
