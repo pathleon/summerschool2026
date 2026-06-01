@@ -248,20 +248,23 @@ int fib(int n) {
 ```
 </div>
 
+
 # Task dependencies
 
-- The `depend` clause can be used to specify constraints on task execution
-    - `in`/`out`/`inout` dependency on a variable: `in` tasks must execute after any **previously created** `out`/`inout` tasks
-    - Allows fine-grained scheduling of tasks that share data. No need for `taskwait` after every task!
+- The `depend` clause can be used to specify constraints on the task execution order
+  - Allows fine-grained scheduling of tasks that share data. No need for `taskwait` after every task!
+- Dependency (`in`, `out`, and `inout`) is associated with the memory address of a variable
+  - Rule: `in` tasks must execute after any **previously created** `out` / `inout` tasks
+  - Note! The dependency variables can also be dummy variables used solely for ordering the tasks
 
 ```c
 int a, b;
 
 #pragma omp task depend(out: a)
-a = -1; // Some modification to `a`
+a = -1;
 
-#pragma omp task depend(in: a) // Guaranteed to run after the `out` task
-b = 2 * a; // Use `a` to compute `b`. Could also mark `b` as an `out` dependency
+#pragma omp task depend(in: a) // Guaranteed to run after the `out: a` task
+b = 2 * a;
 ```
 
 # Summary {.section}
