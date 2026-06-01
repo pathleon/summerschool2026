@@ -1,4 +1,8 @@
 ---
+# SPDX-FileCopyrightText: 2026 CSC - IT Center for Science Ltd. <www.csc.fi>
+#
+# SPDX-License-Identifier: CC-BY-4.0
+
 title:  Multi-GPU programming
 event:  CSC Summer School in High-Performance Computing 2025
 lang:   en
