@@ -2,41 +2,43 @@
 #
 # SPDX-License-Identifier: MIT
 
+.DEFAULT_GOAL := all
+
 ifeq ($(COMP),)
 COMP=lumi
 endif
 
-COMMONDIR=../../common
+# Include the "heat-shared" Makefile: fills in HEAT_SHARED_CFLAGS and adds rule for building HEAT_COMMON_LIB (static)
+HEAT_SHARED_DIR := ../../../../../heat-shared
+include $(HEAT_SHARED_DIR)/Makefile-common
 
 ifeq ($(COMP),gnu)
 CXX=g++
 CC=gcc
-CCFLAGS=-g -O3 -march=native -Wall -I$(COMMONDIR) -DNDEBUG
+CCFLAGS=-g -O3 -march=native -Wall -DNDEBUG
 LDFLAGS=
-LIBS=-lpng
+LIBS=
 endif
 
 ifeq ($(COMP),intel)
 CXX=icpc
 CC=icc
-CCFLAGS=-g -O3 -xHost -I$(COMMONDIR) -DNDEBUG
+CCFLAGS=-g -O3 -xHost -DNDEBUG
 LDFLAGS=
-LIBS=-lpng
+LIBS=
 endif
 
 ifeq ($(COMP),lumi)
-LIBPNG_DIR=/appl/lumi/SW/LUMI-22.12/C/EB/libpng/1.6.38-cpeCray-22.12
 CXX=CC
 CC=cc
-CCFLAGS=-O3 -Wall -I$(COMMONDIR) -I$(LIBPNG_DIR)/include
-LDFLAGS=-L$(LIBPNG_DIR)/lib -Wl,-rpath=$(LIBPNG_DIR)/lib
-LIBS=-lpng
+CCFLAGS=-O3 -Wall
+LDFLAGS=
+LIBS=
 endif
 
 
-EXE=heat
-OBJS=main.o heat.o core.o setup.o io.o utilities.o pngwriter.o
-
+EXE=heat_serial
+OBJS=main.o heat.o core.o setup.o io.o utilities.o
 
 all: $(EXE)
 
@@ -47,19 +49,15 @@ setup.o: setup.cpp heat.hpp
 io.o: io.cpp heat.hpp matrix.hpp
 main.o: main.cpp heat.hpp
 
-$(EXE): $(OBJS)
-	$(CXX) $(CCFLAGS) $(OBJS) -o $@ $(LDFLAGS) $(LIBS)
-
-
-%.o: $(COMMONDIR)/%.c
-	$(CC) $(CCFLAGS) -c $< -o $@
+$(EXE): $(OBJS) $(HEAT_COMMON_LIB)
+	$(CXX) $(CCFLAGS) $(HEAT_SHARED_CFLAGS) $(OBJS) $(HEAT_COMMON_LIB) -o $@ $(LDFLAGS) $(LIBS)
 
 %.o: %.cpp
-	$(CXX) $(CCFLAGS) -c $< -o $@
+	$(CXX) $(CCFLAGS) $(HEAT_SHARED_CFLAGS) -c $< -o $@
 
 %.o: %.c
-	$(CC) $(CCFLAGS) -c $< -o $@
+	$(CC) $(CCFLAGS) $(HEAT_SHARED_CFLAGS) -c $< -o $@
 
 .PHONY: clean
-clean:
+clean: heat-common-clean
 	-/bin/rm -f $(EXE) $(OBJS) a.out *.o *.png *~

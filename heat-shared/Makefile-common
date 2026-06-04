@@ -1,0 +1,26 @@
+# SPDX-FileCopyrightText: 2026 CSC - IT Center for Science Ltd. <www.csc.fi>
+#
+# SPDX-License-Identifier: MIT
+
+# Makefile for building code that is shared across all heat equation implementations.
+# This is intended to be included from other Makefiles.
+
+# Directory of this file (absolute)
+HEAT_SHARED_DIR := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
+HEAT_THIRDPARTY_DIR := $(HEAT_SHARED_DIR)/thirdparty
+
+# Paths consumers should add to their compile flags and link line
+HEAT_SHARED_CFLAGS := -I$(HEAT_SHARED_DIR)/common -I$(HEAT_THIRDPARTY_DIR)
+HEAT_COMMON_LIB := $(HEAT_SHARED_DIR)/heat_common.a
+
+_PNGWRITER_OBJ := $(HEAT_SHARED_DIR)/common/pngwriter.o
+
+$(HEAT_COMMON_LIB): $(_PNGWRITER_OBJ)
+	ar rcs $@ $<
+
+$(_PNGWRITER_OBJ): $(HEAT_SHARED_DIR)/common/pngwriter.c $(HEAT_SHARED_DIR)/common/pngwriter.h
+	$(CC) $(CCFLAGS) $(HEAT_SHARED_CFLAGS) -c $< -o $@
+
+.PHONY: heat-common-clean
+heat-common-clean:
+	-/bin/rm -f $(HEAT_COMMON_LIB) $(_PNGWRITER_OBJ)
