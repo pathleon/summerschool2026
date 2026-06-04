@@ -115,7 +115,7 @@ Implement collective communication in the code.
    - in [cpp/utilities.cpp](cpp/utilities.cpp) or
    - in [fortran/utilities.F90](fortran/utilities.F90)
 2. Replace the individual sends and receives in the routine `read_field` with appropriate collective communication
-   (note that the code needs to be run with the initial data read from an input file found under the [common](common) directory: `srun ./heat_mpi bottle.dat`)
+   (note that the code needs to be run with the initial data read from an input file found under the [heat-shared/data](../../../heat-shared/data) directory: `srun ./heat_mpi ../../../heat-shared/data/bottle.dat`)
    - in [cpp/io.cpp](cpp/io.cpp) or
    - in [fortran/io.F90](fortran/io.F90)
 3. Is it possible to use collective communications also in the routine `write_field`?
