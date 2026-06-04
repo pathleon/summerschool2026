@@ -29,3 +29,8 @@ make -j6
 ```bash
 make -j6 TARGET=c/solution
 ```
+
+Remember to load the HDF5 module before building. On LUMI:
+```bash
+module load cray-hdf5-parallel
+```
