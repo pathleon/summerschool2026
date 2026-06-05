@@ -1,66 +1,100 @@
-# SPDX-FileCopyrightText: 2010 CSC - IT Center for Science Ltd. <www.csc.fi>
+# SPDX-FileCopyrightText: 2026 CSC - IT Center for Science Ltd. <www.csc.fi>
 #
 # SPDX-License-Identifier: MIT
 
-ifeq ($(COMP),)
-COMP=lumi
+# Build the heat-restart equation exercise or its model solution.
+# Usage:
+#   make                                    # build the exercise code
+#   make SOLUTION=solution-send-recv        # build model solution-send-recv
+
+.DEFAULT_GOAL := all
+
+# default to LUMI configuration
+ifeq ($(PLATFORM),)
+PLATFORM=lumi
 endif
 
-COMMONDIR=../common
+$(info PLATFORM: $(PLATFORM))
 
-ifeq ($(COMP),intel)
+# SOLUTION specifies which model solution to build. If left empty, build the exercise code from Makefile directory
+SOLUTION ?=
+SRCDIR   := $(if $(SOLUTION),$(SOLUTION),.)
+BUILDDIR := $(if $(SOLUTION),build/$(SOLUTION),build)
+
+# Override before including so heat-shared artifacts land in our build tree, separately for each target
+HEAT_COMMON_LIB := $(BUILDDIR)/heat_common.a
+
+# Include the "heat-shared" Makefile: fills in HEAT_SHARED_CFLAGS and adds rule for building HEAT_COMMON_LIB (static)
+HEAT_SHARED_DIR := ../../../../heat-shared
+include $(HEAT_SHARED_DIR)/Makefile-common
+
+# PLATFORM=generic is intended for laptops and local workstations. Should work on any Unix-like system provided that MPI is available
+ifeq ($(PLATFORM),generic)
+CXX=mpicxx
+CC=mpicc
 FC=mpif90
-CC=icc
-FCFLAGS=-O2 -xHost
-CCFLAGS=-O2 -xHost -I$(COMMONDIR)
+CCFLAGS=-g -O3 -march=native -Wall -DNDEBUG
+FCFLAGS=-g -O3 -march=native -Wall
+FCMODFLAGS=-J$(BUILDDIR)
 LDFLAGS=
-LIBS=-lpng
+LIBS=
 endif
 
-ifeq ($(COMP),gnu)
+ifeq ($(PLATFORM),mahti)
+CXX=mpicxx
+CC=mpicc
 FC=mpif90
-CC=gcc
-FCFLAGS=-O3 -Wall -march=native
-CCFLAGS=-O3 -Wall -march=native -I$(COMMONDIR)
+CCFLAGS=-O3 -march=native -Wall -DNDEBUG
+FCFLAGS=-O3 -march=native -Wall
+FCMODFLAGS=-J$(BUILDDIR)
 LDFLAGS=
-LIBS=-lpng
+LIBS=
 endif
 
-ifeq ($(COMP),lumi)
-LIBPNG_DIR=/appl/lumi/SW/LUMI-22.12/C/EB/libpng/1.6.38-cpeCray-22.12
-FC=ftn
+ifeq ($(PLATFORM),lumi)
+CXX=CC
 CC=cc
+FC=ftn
+CCFLAGS=-O3 -Wall
 FCFLAGS=-O3
-CCFLAGS=-O3 -I$(COMMONDIR) -I$(LIBPNG_DIR)/include
-LDFLAGS=-L$(LIBPNG_DIR)/lib -Wl,-rpath=$(LIBPNG_DIR)/lib
-LIBS=-lpng
+FCMODFLAGS=-J$(BUILDDIR)
+LDFLAGS=
+LIBS=
 endif
 
+# Explicitly list objects (.o)
+OBJS = $(addprefix $(BUILDDIR)/,heat_mod.o pngwriter_mod.o core.o utilities.o io.o setup.o main.o)
 
-EXE=heat_mpi
-OBJS=main.o heat_mod.o core.o setup.o utilities.o io.o pngwriter_mod.o
-OBJS_PNG=$(COMMONDIR)/pngwriter.o
+# List module dependencies so that the build proceeds in correct order
+$(BUILDDIR)/pngwriter_mod.o: $(BUILDDIR)/heat_mod.o
+$(BUILDDIR)/core.o:          $(BUILDDIR)/heat_mod.o
+$(BUILDDIR)/utilities.o:     $(BUILDDIR)/heat_mod.o
+$(BUILDDIR)/io.o:            $(BUILDDIR)/heat_mod.o $(BUILDDIR)/pngwriter_mod.o
+$(BUILDDIR)/setup.o:         $(BUILDDIR)/heat_mod.o $(BUILDDIR)/utilities.o $(BUILDDIR)/io.o
+$(BUILDDIR)/main.o:          $(BUILDDIR)/heat_mod.o $(BUILDDIR)/core.o $(BUILDDIR)/io.o $(BUILDDIR)/setup.o $(BUILDDIR)/utilities.o
 
+ifeq ($(wildcard $(SRCDIR)/*.F90),)
+$(error No source files found in '$(SRCDIR)'! check that SOLUTION is correct)
+endif
+
+EXE = heat_mpi
+EXE_FULL = $(BUILDDIR)/$(EXE)
 
 all: $(EXE)
 
-$(COMMONDIR)/pngwriter.o: $(COMMONDIR)/pngwriter.c $(COMMONDIR)/pngwriter.h
-core.o: core.F90 heat_mod.o
-utilities.o: utilities.F90 heat_mod.o
-io.o: io.F90 heat_mod.o pngwriter_mod.o
-setup.o: setup.F90 heat_mod.o utilities.o io.o
-pngwriter_mod.o: pngwriter_mod.F90 heat_mod.o
-main.o: main.F90 heat_mod.o core.o io.o setup.o utilities.o
+$(BUILDDIR):
+	@mkdir -p $@
 
-$(EXE): $(OBJS) $(OBJS_PNG)
-	$(FC) $(FCFLAGS) $(OBJS) $(OBJS_PNG) -o $@ $(LDFLAGS) $(LIBS)
+# Just copies the produced executable to Makefile directory
+$(EXE): $(EXE_FULL)
+	cp $< $@
 
-%.o: %.F90
-	$(FC) $(FCFLAGS) -c $< -o $@
+$(EXE_FULL): $(OBJS) $(HEAT_COMMON_LIB)
+	$(FC) $(FCFLAGS) $(LDFLAGS) $(OBJS) $(HEAT_COMMON_LIB) -o $@ $(LIBS)
 
-%.o: %.c
-	$(CC) $(CCFLAGS) -c $< -o $@
+$(BUILDDIR)/%.o: $(SRCDIR)/%.F90 | $(BUILDDIR)
+	$(FC) $(FCFLAGS) $(FCMODFLAGS) -c $< -o $@
 
 .PHONY: clean
-clean:
-	-/bin/rm -f $(EXE) a.out *.o *.mod *.png *~ $(COMMONDIR)/*.o
+clean: heat-common-clean
+	-/bin/rm -rf build $(EXE)

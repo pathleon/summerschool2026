@@ -1,65 +1,90 @@
-# SPDX-FileCopyrightText: 2010 CSC - IT Center for Science Ltd. <www.csc.fi>
+# SPDX-FileCopyrightText: 2026 CSC - IT Center for Science Ltd. <www.csc.fi>
 #
 # SPDX-License-Identifier: MIT
 
-ifeq ($(COMP),)
-COMP=lumi
+# Build the heat-restart equation exercise or its model solution.
+# Usage:
+#   make                                    # build the exercise code
+#   make SOLUTION=solution-send-recv        # build model solution-send-recv
+
+.DEFAULT_GOAL := all
+
+# default to LUMI configuration
+ifeq ($(PLATFORM),)
+PLATFORM=lumi
 endif
 
-COMMONDIR=../common
+$(info PLATFORM: $(PLATFORM))
 
-ifeq ($(COMP),gnu)
+# SOLUTION specifies which model solution to build. If left empty, build the exercise code from Makefile directory
+SOLUTION ?=
+SRCDIR   := $(if $(SOLUTION),$(SOLUTION),.)
+BUILDDIR := $(if $(SOLUTION),build/$(SOLUTION),build)
+
+# Override before including so heat-shared artifacts land in our build tree, separately for each target
+HEAT_COMMON_LIB := $(BUILDDIR)/heat_common.a
+
+# Include the "heat-shared" Makefile: fills in HEAT_SHARED_CFLAGS and adds rule for building HEAT_COMMON_LIB (static)
+HEAT_SHARED_DIR := ../../../../heat-shared
+include $(HEAT_SHARED_DIR)/Makefile-common
+
+# PLATFORM=generic is intended for laptops and local workstations. Should work on any Unix-like system provided that MPI is available
+ifeq ($(PLATFORM),generic)
 CXX=mpicxx
-CC=gcc
-CCFLAGS=-g -O3 -march=native -Wall -I$(COMMONDIR) -DNDEBUG
+CC=mpicc
+CCFLAGS=-g -O3 -march=native -Wall -DNDEBUG
 LDFLAGS=
-LIBS=-lpng
+LIBS=
 endif
 
-ifeq ($(COMP),intel)
+ifeq ($(PLATFORM),mahti)
 CXX=mpicxx
-CC=icc
-CCFLAGS=-g -O3 -xHost -I$(COMMONDIR) -DNDEBUG
+CC=mpicc
+CCFLAGS=-O3 -march=native -Wall -DNDEBUG
 LDFLAGS=
-LIBS=-lpng
+LIBS=
 endif
 
-ifeq ($(COMP),lumi)
-LIBPNG_DIR=/appl/lumi/SW/LUMI-22.12/C/EB/libpng/1.6.38-cpeCray-22.12
+ifeq ($(PLATFORM),lumi)
 CXX=CC
 CC=cc
-CCFLAGS=-O3 -Wall -I$(COMMONDIR) -I$(LIBPNG_DIR)/include
-LDFLAGS=-L$(LIBPNG_DIR)/lib -Wl,-rpath=$(LIBPNG_DIR)/lib
-LIBS=-lpng
+CCFLAGS=-O3 -Wall
+LDFLAGS=
+LIBS=
 endif
 
+# Explicitly list objects (.o), one for each source file.
+# Larger projects may want to automatize this with file globbing and wildcards
+OBJS = $(addprefix $(BUILDDIR)/,main.o core.o heat.o setup.o io.o utilities.o)
 
-EXE=heat_mpi
-OBJS=main.o heat.o core.o setup.o io.o utilities.o pngwriter.o
+ifeq ($(wildcard $(SRCDIR)/*.cpp),)
+$(error No source files found in '$(SRCDIR)'! check that SOLUTION is correct)
+endif
 
+EXE = heat_mpi
+EXE_FULL = $(BUILDDIR)/$(EXE)
+DEPS = $(OBJS:.o=.d)
 
 all: $(EXE)
 
-utilities.o: utilities.cpp heat.hpp
-heat.o: heat.cpp heat.hpp matrix.hpp
-core.o: core.cpp heat.hpp
-setup.o: setup.cpp heat.hpp
-io.o: io.cpp heat.hpp matrix.hpp
-main.o: main.cpp heat.hpp
+$(BUILDDIR):
+	@mkdir -p $@
 
-$(EXE): $(OBJS)
-	$(CXX) $(CCFLAGS) $(OBJS) -o $@ $(LDFLAGS) $(LIBS)
+# Just copies the produced executable to Makefile directory
+$(EXE): $(EXE_FULL)
+	cp $< $@
 
+$(EXE_FULL): $(OBJS) $(HEAT_COMMON_LIB)
+	$(CXX) $(CCFLAGS) $(LDFLAGS) $(OBJS) $(HEAT_COMMON_LIB) -o $@ $(LIBS)
 
-%.o: $(COMMONDIR)/%.c
-	$(CC) $(CCFLAGS) -c $< -o $@
+# The -MMD -MP flags instruct the compiler to generate file dependency graphs,
+# so that on consecutive builds we only need to rebuild objects that actually changed.
 
-%.o: %.cpp
-	$(CXX) $(CCFLAGS) -c $< -o $@
+$(BUILDDIR)/%.o: $(SRCDIR)/%.cpp | $(BUILDDIR)
+	$(CXX) $(CCFLAGS) $(HEAT_SHARED_CFLAGS) -I$(SRCDIR) -MMD -MP -c $< -o $@
 
-%.o: %.c
-	$(CC) $(CCFLAGS) -c $< -o $@
+-include $(DEPS)
 
 .PHONY: clean
-clean:
-	-/bin/rm -f $(EXE) $(OBJS) a.out *.o *.png *~
+clean: heat-common-clean
+	-/bin/rm -rf build $(EXE)

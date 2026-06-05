@@ -51,11 +51,13 @@ the parallelization as follows (marked with TODOs in the source code):
    - in [cpp/core.cpp](cpp/core.cpp) or
    - in [fortran/core.F90](fortran/core.F90)
 
-To build the code, please use the provided `Makefile` (by typing `make`).
+There is a working serial code under [cpp/serial](cpp/serial) / [fortran/serial](fortran/serial)
+which you can use as a reference.
 
-There is also working serial code under [cpp/serial](cpp/serial) / [fortran/serial](fortran/serial)
-which you can use as reference.
-
+To build the code, please use the provided `Makefile`. The same `Makefile` can also build our
+model solutions using the optional `SOLUTION` variable.
+Use the `PLATFORM` variable if building on systems other than LUMI.
+`make PLATFORM=generic` should work on any Unix-like system.
 
 ### Using sendrecv
 
@@ -96,7 +98,7 @@ Implement collective communication in the code.
    - in [cpp/utilities.cpp](cpp/utilities.cpp) or
    - in [fortran/utilities.F90](fortran/utilities.F90)
 2. Replace the individual sends and receives in the routine `read_field` with appropriate collective communication
-   (note that the code needs to be run with the initial data read from an input file found under the [common](common) directory: `srun ./heat_mpi bottle.dat`)
+   (note that the code needs to be run with the initial data read from an input file found under the [heat-shared/data](../../../heat-shared/data) directory: `srun ./heat_mpi ../../../heat-shared/data/bottle.dat`)
    - in [cpp/io.cpp](cpp/io.cpp) or
    - in [fortran/io.F90](fortran/io.F90)
 3. Is it possible to use collective communications also in the routine `write_field`?
