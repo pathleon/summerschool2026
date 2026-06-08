@@ -43,7 +43,7 @@ program heat_solve
   ! Main iteration loop, save a picture every
   ! image_interval steps
 
-  call cpu_time(start_time)
+  start_time = wtime()
 
   do iter = 1, nsteps
      call evolve(current, previous, a, dt)
@@ -53,7 +53,7 @@ program heat_solve
      call swap_fields(current, previous)
   end do
 
-  call cpu_time(stop_time)
+  stop_time = wtime()
 
   ! Average temperature for reference
   average_temp = average(previous)
@@ -65,5 +65,14 @@ program heat_solve
   end if
 
   call finalize(current, previous)
+
+contains
+
+  real(8) function wtime()
+    implicit none
+    integer(kind=8) :: count, count_rate
+    call system_clock(count, count_rate)
+    wtime = real(count, kind=8) / real(count_rate, kind=8)
+  end function wtime
 
 end program heat_solve
