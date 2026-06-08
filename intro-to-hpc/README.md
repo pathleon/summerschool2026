@@ -11,7 +11,7 @@ directly to your summershool clone:
 
     cd /scratch/project_462000956/$USER/summerschool
 
-See the [exercise instructions](../exercise-instructions.md) for general instructions.
+See the exercise instructions for [LUMI](../README_LUMI.md) or [Mahti](../README_Mahti.md) for general instructions.
 
 ## Exercises
 

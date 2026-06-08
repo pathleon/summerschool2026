@@ -6,9 +6,10 @@ SPDX-License-Identifier: CC-BY-4.0
 
 # Exercise: Histogram bin count with HIP
 
-In this exercise we will see different versions of an histogram count program, starting from the serial implementation to advanced and more performant. For the general instructions, you can look at [exercise instructions](../../../exercise-instructions-lumi.md).
+In this exercise we will see different versions of an histogram count program, starting from the serial implementation to advanced and more performant.
+For the general instructions, you can look at exercise instructions for [LUMI](../../../README_LUMI.md) or [Mahti](../../../README_Mahti.md).
 
-## Task: run and profile the basic program. 
+## Task: run and profile the basic program
 
 In the provided code, the only provided kernel is a very naive one where a single thread is working. This is even slower than CPU, so we need to find some parallelism in order to leverage GPU capabilities.
 
