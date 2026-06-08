@@ -21,5 +21,5 @@ See the general instructions for [LUMI](../README_LUMI.md) or [Mahti](../README_
 
 ## Exercises
 
-- [Building and running](building-running)
-- [Scalability analysis](scalability)
+- [Building and running on a supercomputer](02-building-running)
+- [Scalability analysis](03-scalability)
