@@ -36,9 +36,9 @@ int main(int argc, char **argv)
 
     MPI_Init(&argc, &argv);
 
-    initialize(argc, argv, &current, 
-        &previous, &nsteps, 
-        &parallelization, 
+    initialize(argc, argv, &current,
+        &previous, &nsteps,
+        &parallelization,
         &gpu_current, &gpu_previous);
 
     /* Output the initial field */
@@ -47,7 +47,7 @@ int main(int argc, char **argv)
     average_temp = average(&current);
     if (parallelization.rank == 0) {
         printf("Average temperature at start: %f\n", average_temp);
-    }    
+    }
 
 
     /* Largest stable time step */
@@ -75,6 +75,9 @@ int main(int argc, char **argv)
 
     stop_clock = MPI_Wtime();
 
+    /* Get the final field on CPU for averaging and output */
+    hipMemcpy(previous.data, gpu_previous.data, sizeof(double)*(current.nx+2)*(current.ny+2), hipMemcpyDefault);
+
     /* Average temperature for reference */
     average_temp = average(&previous);
 
@@ -88,7 +91,6 @@ int main(int argc, char **argv)
     }
 
     /* Output the final field */
-    hipMemcpy(previous.data, gpu_previous.data, sizeof(double)*(current.nx+2)*(current.ny+2), hipMemcpyDefault);
     write_field(&previous, nsteps, &parallelization);
 
     finalize(&current, &previous);
