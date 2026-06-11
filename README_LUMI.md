@@ -227,7 +227,7 @@ Example `job.sh` for running a GPU program reserving 1 GPU (= 1 GCD of the AMD M
 #SBATCH --partition=small-g
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
-#SBATCH --cpus-per-task=7
+#SBATCH --cpus-per-task=4
 #SBATCH --gpus-per-node=1
 #SBATCH --time=00:05:00
 
@@ -235,7 +235,7 @@ Example `job.sh` for running a GPU program reserving 1 GPU (= 1 GCD of the AMD M
 srun ./prog.x
 ```
 
-Note that this script allocates also 7 CPU cores per task, which is a fair share of a single GPU out of the full node.
+Note that this script allocates also 4 CPU cores per task.
 These extra CPU cores are especially useful for OpenMP runtime.
 
 For multi-GPU jobs using MPI:

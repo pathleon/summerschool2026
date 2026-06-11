@@ -246,7 +246,7 @@ Example `job.sh` for running a GPU program reserving 1 NVIDIA A100 GPU:
 #SBATCH --partition=gpusmall
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
-#SBATCH --cpus-per-task=2
+#SBATCH --cpus-per-task=4
 #SBATCH --gres=gpu:a100:1
 #SBATCH --time=00:05:00
 
@@ -254,7 +254,7 @@ Example `job.sh` for running a GPU program reserving 1 NVIDIA A100 GPU:
 srun ./prog.x
 ```
 
-Note that this script allocates also 2 CPU cores per task.
+Note that this script allocates also 4 CPU cores per task.
 These extra CPU cores are especially useful for OpenMP runtime.
 
 For multi-GPU jobs using MPI:
