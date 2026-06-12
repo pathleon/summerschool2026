@@ -23,10 +23,11 @@ int main(int argc, char* argv[]) {
   int my_device = -1;
 
   int node_rank;
-  // TODO obtain node local rank by creating "SHARED" communicator 
+  // TODO (part b) obtain node local rank by creating "SHARED" communicator 
   MPI_Comm node_comm;
 
-  // TODO query number of devices and set different device for each local MPI rank
+  // TODO (part a) query number of devices to num_devices
+  // TODO (part b) set different device for each local MPI rank
 
   if (0 == rank) {
     printf("Total number of MPI processes: %d\n", size);
@@ -36,8 +37,8 @@ int main(int argc, char* argv[]) {
 // Try to print in synchronized manner
   for (int i=0; i < size; i++) {
     if (rank == i) {
-      printf("Global rank: %d in node %s Local rank: %d using GPU %d\n",
-             rank, processor_name, node_rank, my_device);
+      printf("Global rank: %d in node %s Local rank: %d using GPU id %d out of %d devices\n",
+             rank, processor_name, node_rank, my_device, num_devices);
       fflush(stdout);
     }
     
