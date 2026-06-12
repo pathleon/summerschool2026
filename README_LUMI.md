@@ -79,8 +79,7 @@ LUMI has several programming environments.
 
 For CPU programming use:
 ```bash
-module load LUMI/25.03
-module load partition/C
+module load LUMI/25.03 partition/C
 ```
 
 #### MPI
@@ -121,9 +120,7 @@ LUMI has several programming environments.
 
 For GPU programming use:
 ```bash
-module load LUMI/25.03
-module load partition/G
-module load rocm/6.3.4
+module load LUMI/25.03 partition/G rocm/6.3.4
 ```
 
 #### HIP and MPI+HIP
