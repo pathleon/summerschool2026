@@ -10,9 +10,27 @@ lang:   en
 
 # Overview
 
+We will cover the following topics
+  \
+  \
+- Measuring performances
 - General optimisation strategies
 - Optimizing memory access
 - Other GPU kernel optimisations
+
+# Learning objectives
+
+After this lecture you will:
+  \
+  \
+
+- Know some tools/techniques to measure performances of kernels
+- Understand why engineering data is important for GPUs
+- Know some optimization techniques for:
+  - Memory
+  - Kernels
+# Overview
+
 
 # Measuring performance
 

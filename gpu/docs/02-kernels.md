@@ -8,6 +8,30 @@ event:  CSC Summer School in High-Performance Computing 2026
 lang:   en
 ---
 
+# Overview
+
+We will cover the following topics
+  \
+  \
+
+- CUDA/HIP terminology
+- Some APIs and keywords
+- Thread hierarchy
+- (Basic) Memory management
+- Error checking
+
+
+# Learning Objectives
+
+After this lecture you will understand
+  \
+  \
+- GPU terminology (e.g. what is a thread, a kernel,...)
+- Clarifying GPU programming model 
+
+But most important, you will be able to launch kernels!
+
+
 # CUDA
 
 ::: incremental
@@ -189,15 +213,9 @@ __global__ void axpy(int n, double a, double *x, double *y)
 # Launching kernels
 
 ::: incremental
-- kernels are launched with one of the two following options:
-  - CUDA syntax (recommended, because it works both on CUDA and HIP):
+- kernels are launched with the following syntax:
   ```cpp
   axpy<<<blocks, threads, shmem, stream>>>(args)
-  ```
-  
-  - HIP syntax:
-  ```cpp
-  hipLaunchKernelGGL(axpy, blocks, threads, shmem, stream, args)
   ```
 
 - grid dimensions are obligatory
