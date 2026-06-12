@@ -228,6 +228,9 @@ Example `job.sh` for running a GPU program reserving 1 GPU (= 1 GCD of the AMD M
 #SBATCH --gpus-per-node=1
 #SBATCH --time=00:05:00
 
+# Enable GPU-aware MPI by uncommenting the line below
+#export MPICH_GPU_SUPPORT_ENABLED=1
+
 # Run the program
 srun ./prog.x
 ```
@@ -237,7 +240,7 @@ These extra CPU cores are especially useful for OpenMP runtime.
 
 For multi-GPU jobs using MPI:
 - Change the number of MPI tasks and GPUs per node: `--ntasks-per-node=<number_of_mpi_tasks>` and `--gpus-per-node=<number_of_gpus>`
-- Include `export MPICH_GPU_SUPPORT_ENABLED=1` before running the program to enable GPU-aware MPI
+- Uncomment `export MPICH_GPU_SUPPORT_ENABLED=1` to enable GPU-aware MPI
 
 
 ### Interactive jobs
