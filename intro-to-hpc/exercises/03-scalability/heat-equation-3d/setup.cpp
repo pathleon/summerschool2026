@@ -93,6 +93,10 @@ void initialize(int argc, char *argv[], Field& current,
         std::cout << "Number of MPI tasks: " << parallel.size 
                   << " (" << parallel.dims[0] << " x " << parallel.dims[1] << " x " 
                   << parallel.dims[2] << ")" << std::endl;
+#ifdef _OPENMP
         std::cout << "Number of OpenMP threads: " << parallel.num_threads << std::endl;
+#else
+        std::cout << "OpenMP disabled" << std::endl;
+#endif
     }
 }
