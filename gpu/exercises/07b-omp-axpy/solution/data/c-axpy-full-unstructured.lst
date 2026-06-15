@@ -1,0 +1,92 @@
+Legend:
+
+  A - recognized idiom
+  D - deleted loop
+  I - callee inlined here
+  L - interleaved loop
+  M - multithreaded
+  P - peeled loop
+  S - distributed loop
+  U - completely unrolled loop
+  u - partially unrolled loop
+  V - vectorized loop
+  X - loop interchanged with enclosing loop
+  Z - versioned loop for LICM
+  + - additional messages below
+
+----------
+
+ 1.           // SPDX-FileCopyrightText: 2025 CSC - IT Center for Science Ltd. <www.csc.fi>
+ 2.           //
+ 3.           // SPDX-License-Identifier: MIT
+ 4.           
+ 5.           #include <cstdio>
+ 6.           #include <string>
+ 7.           #include <vector>
+ 8.           #include "helper_functions.hpp"
+ 9.           
+10.           
+11.           int main(int argc, char* argv[]) {
+12.               // Array size
+13.               int n = 102400;
+14.               if (argc > 1) {
+15.                   n = std::stoi(argv[1]);
+16.               }
+17.               printf("Array size n = %d\n", n);
+18.           
+19.               double alpha;
+20.               std::vector<double> x(n), y(n);
+21.               double *_x = x.data(), *_y = y.data();
+22.           
+23.               #pragma omp target enter data map(alloc: _x[0:n], _y[0:n])
+24.           
+25.               // Initialization
+26.               alpha = 3.0;
+27. + I 0--<>     #pragma omp target teams distribute parallel for
+28. +   M---<     for (int i = 0; i < n; i++) {
+29. +   M             double frac = 1.0 / ((double) (n - 1));
+30.     M             _x[i] = i * frac;
+31.     M             _y[i] = i * frac * 100;
+32.     M--->     }
+33.           
+34.               // Print input values
+35.               printf("Input:\n");
+36.               printf("a = %8.4f\n", alpha);
+37.               #pragma omp target update from(_x[0:n]) from(_y[0:n])
+38.               print_array("x", x);
+39.               print_array("y", y);
+40.           
+41.               // Calculate axpy
+42. + I 0--<>     #pragma omp target teams distribute parallel for
+43. +   M---<     for (int i = 0; i < n; i++) {
+44. +   M             _y[i] += alpha * _x[i];
+45.     M--->     }
+46.           
+47.               #pragma omp target exit data map(delete: _x[0:n]) map(from: _y[0:n])
+48.           
+49.               // Print output values
+50.               printf("Output:\n");
+51.               print_array("y", y);
+52.           
+53.               return 0;
+54.           }
+
+----------
+
+27. loop not distributed: loop is not bottom tested
+27. loop not distributed: use -Rpass-analysis=loop-distribute for more info
+27. loop not vectorized
+
+28. Outlined parallel region
+
+29. hoisting add
+29. hoisting fdiv
+29. hoisting uitofp
+
+42. loop not distributed: loop is not bottom tested
+42. loop not distributed: use -Rpass-analysis=loop-distribute for more info
+42. loop not vectorized
+
+43. Outlined parallel region
+
+44. hoisting bitcast

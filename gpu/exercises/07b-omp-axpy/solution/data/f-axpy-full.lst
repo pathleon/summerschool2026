@@ -1,0 +1,234 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                          S u m m a r y   R e p o r t
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Compilation
+-----------
+File     : axpy-full.F90
+Compiled : 06/15/26  12:02:03
+Compiler : Version 19.0.0
+Ftnlx    : Version 19.0.0 
+Target   : x86-64
+Command  : ftn_driver.exe -hcpu=x86-trento -haccel=amdgcn-gfx90a -hnetwork=ofi
+           -hdynamic -D__CRAY_X86_TRENTO -D__CRAY_AMD_GFX90A
+           -D__CRAYXT_COMPUTE_LINUX_TARGET -fopenmp -O3 -hlist=m axpy-full.F90
+           -of-axpy-full.x -flibsci-libs=provided
+           -I/opt/cray/pe/cce/19.0.0/cce-clang/x86_64/lib/clang/19/include
+           -I/opt/cray/pe/cce/19.0.0/cce/x86_64/include/craylibs -I/usr/include
+           --rocm-path=/opt/rocm-6.3.4 -D__HIP_PLATFORM_AMD__
+           -I/opt/cray/pe/mpich/8.1.32/ofi/cray/17.0/include
+           -I/opt/cray/pe/libsci/25.03.0/CRAY/17.0/x86_64/include
+           -I/opt/rocm-6.3.4/include -I/opt/rocm-6.3.4/include/rocprofiler
+           -I/opt/rocm-6.3.4/include/roctracer
+           -I/opt/cray/pe/dsmml/0.3.1/dsmml//include
+           -L/opt/cray/pe/mpich/8.1.32/ofi/cray/17.0/lib
+           -L/opt/cray/pe/mpich/8.1.32/gtl/lib
+           -L/opt/cray/pe/libsci/25.03.0/CRAY/17.0/x86_64/lib
+           -L/opt/rocm-6.3.4/lib -L/opt/rocm-6.3.4/lib/rocprofiler
+           -L/opt/rocm-6.3.4/lib/roctracer
+           -L/opt/cray/pe/dsmml/0.3.1/dsmml//lib
+           -L/opt/cray/pe/cce/19.0.0/cce/x86_64/lib/pkgconfig/../ -lamdhip64
+           -lxpmem -ldl -lmpi_gtl_hsa -lstdc++ -lquadmath -lcraymp
+           -lcrayacc_amdgpu -lmodules -lfi -lcraymath -lf -lu -lcsup
+           -I/usr/include -lpthread
+           -L/opt/cray/pe/cce/19.0.0/cce-clang/x86_64/lib/clang/19/lib/linux
+           -L/opt/cray/pe/cce/19.0.0/cce-clang/x86_64/lib/clang/19/lib/linux/../
+           ../../.. -lcsup -lm -lclang_rt.craypgo-x86_64
+           -lclang_rt.builtins-x86_64 -lc -lclang_rt.builtins-x86_64
+Program
+  Units  : HELPER_FUNCTIONS
+          AXPY
+
+ftnlx report
+------------
+Source   : axpy-full.F90
+Date     : 06/15/2026  12:02:04
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                          S o u r c e   L i s t i n g
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+     %%%    L o o p m a r k   L e g e n d    %%%
+
+     Primary Loop Type        Modifiers
+     ------- ---- ----        ---------
+     A - Pattern matched      a - atomic memory operation
+                              b - blocked
+     C - Collapsed            c - conditional and/or computed
+     D - Deleted               
+     E - Cloned                
+     F - Flat - No calls      f - fused
+     G - Accelerated          g - partitioned
+     I - Inlined              i - interchanged
+     M - Multithreaded        m - partitioned
+                              n - non-blocking remote transfer
+                              p - partial
+     R - Rerolling            r - unrolled
+                              s - shortloop
+     V - Vectorized           w - unwound
+
+     + - More messages listed at end of listing
+     ------------------------------------------
+
+
+    1.                 ! SPDX-FileCopyrightText: 2025 CSC - IT Center for Science Ltd. <www.csc.fi>
+    2.                 !
+    3.                 ! SPDX-License-Identifier: MIT
+    4.                 
+    5.                 #include "helper_functions.F90"
+
+ftn-6286 ftn: VECTOR PRINT_ARRAY, File =
+helper_functions.F90, Line = 19 
+  A loop starting at line 19 was not vectorized because it contains input/output operations at line 23.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                          S o u r c e   L i s t i n g
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    6.                 
+    7.                 program axpy
+    8.                   use helper_functions
+    9.                   implicit none
+   10.                   character(len=32) :: arg
+   11.                   integer :: i, n
+   12.                   real(8) :: alpha, frac, t0, t1
+   13.                   real(8), allocatable :: x(:), y(:)
+   14.                 
+   15.                   ! Array size
+   16.                   n = 102400
+   17.  +                call get_command_argument(1, arg)
+   18.                   if (len_trim(arg) > 0) then
+   19.                     read(arg, *) n
+   20.                   end if
+   21.                   print '(A, I0)', "Array size n = ", n
+   22.                 
+   23.                   allocate(x(n), y(n))
+   24.                 
+   25.  +                !$omp target data map(alloc: x(1:n)) map(from: y(1:n))
+   26.                     ! Initialization
+   27.                     alpha = 3.0d0
+   28.  + MG---------<     !$omp target teams distribute parallel do
+   29.    MG gr2-----<     do i = 1, n
+   30.    MG gr2             frac = 1.0d0 / real(n - 1, kind=8)
+   31.  + MG gr2             x(i) = real(i - 1, kind=8) * frac
+   32.  + MG gr2             y(i) = real(i - 1, kind=8) * frac * 100.0d0
+   33.    MG gr2----->     end do
+   34.    MG--------->     !$omp end target teams distribute parallel do
+   35.                 
+   36.                     ! Print input values
+   37.                     print '(A)', "Input:"
+   38.                     print '(A, F8.4)', "a = ", alpha
+   39.                     !$omp target update from(x(1:n)) from(y(1:n))
+   40.  + I                call print_array("x", x)
+   41.  + I                call print_array("y", y)
+   42.                 
+   43.                     ! Calculate axpy
+   44.  + MG---------<     !$omp target teams distribute parallel do
+   45.    MG gr2-----<     do i = 1, n
+   46.    MG gr2             y(i) = y(i) + alpha * x(i)
+   47.    MG gr2----->     end do
+   48.    MG--------->     !$omp end target teams distribute parallel do
+   49.                   !$omp end target data
+   50.                 
+   51.                   ! Print output values
+   52.                   print '(A)', "Output:"
+   53.  + I              call print_array("y", y)
+   54.                 
+   55.                   deallocate(x, y)
+   56.                 
+   57.                 end program axpy
+
+ftn-3021 ftn: IPA AXPY, File = axpy-full.F90, Line = 17 
+  "_GET_COMMAND_ARGUMENT_2018" was not inlined because the compiler was unable to locate the routine.
+
+ftn-6413 ftn: ACCEL AXPY, File = axpy-full.F90, Line = 25 
+  A data region was created at line 25 and ending at line 49.
+
+ftn-6420 ftn: ACCEL AXPY, File = axpy-full.F90, Line = 25 
+  If not already present: allocate memory for user shaped variable "y" on accelerator, copy back at line 49 (acc_copyout).
+
+ftn-6422 ftn: ACCEL AXPY, File = axpy-full.F90, Line = 25 
+  If not already present: allocate memory for user shaped variable "x" on accelerator, free at line 49 (acc_share).
+
+ftn-6405 ftn: ACCEL AXPY, File = axpy-full.F90, Line = 28 
+  A region starting at line 28 and ending at line 34 was placed on the accelerator.
+
+ftn-6823 ftn: THREAD AXPY, File = axpy-full.F90, Line = 28 
+  A region starting at line 28 and ending at line 34 was multi-threaded.
+
+ftn-6416 ftn: ACCEL AXPY, File = axpy-full.F90, Line = 28 
+  If not already present: allocate memory and copy whole array "x" to accelerator, copy back at line 34 (acc_copy).
+
+ftn-6416 ftn: ACCEL AXPY, File = axpy-full.F90, Line = 28 
+  If not already present: allocate memory and copy whole array "y" to accelerator, copy back at line 34 (acc_copy).
+
+ftn-6823 ftn: THREAD AXPY, File = axpy-full.F90, Line = 28 
+  A region starting at line 28 and ending at line 34 was multi-threaded.
+
+ftn-6823 ftn: THREAD AXPY, File = axpy-full.F90, Line = 28 
+  A region starting at line 28 and ending at line 34 was multi-threaded.
+
+ftn-6005 ftn: SCALAR AXPY, File = axpy-full.F90, Line = 29 
+  A loop starting at line 29 was unrolled 2 times.
+
+ftn-6430 ftn: ACCEL AXPY, File = axpy-full.F90, Line = 29 
+  A loop starting at line 29 was partitioned across the threadblocks and the 256 threads within a threadblock.
+
+ftn-6009 ftn: SCALAR AXPY, File = axpy-full.F90, Line = 31 
+  A floating point expression involving an induction variable was strength reduced by optimization.  This may cause numerical
+  differences.
+
+ftn-6009 ftn: SCALAR AXPY, File = axpy-full.F90, Line = 32 
+  A floating point expression involving an induction variable was strength reduced by optimization.  This may cause numerical
+  differences.
+
+ftn-3001 ftn: IPA AXPY, File = axpy-full.F90, Line = 40 
+  Leaf "print_array"(axpy-full.F90:10) was inlined.
+
+ftn-6286 ftn: VECTOR AXPY, File = axpy-full.F90, Line = 40 
+  A loop starting at line 40 was not vectorized because it contains input/output operations at line 40.
+
+ftn-3001 ftn: IPA AXPY, File = axpy-full.F90, Line = 41 
+  Leaf "print_array"(axpy-full.F90:10) was inlined.
+
+ftn-6286 ftn: VECTOR AXPY, File = axpy-full.F90, Line = 41 
+  A loop starting at line 41 was not vectorized because it contains input/output operations at line 41.
+
+ftn-6405 ftn: ACCEL AXPY, File = axpy-full.F90, Line = 44 
+  A region starting at line 44 and ending at line 48 was placed on the accelerator.
+
+ftn-6823 ftn: THREAD AXPY, File = axpy-full.F90, Line = 44 
+  A region starting at line 44 and ending at line 48 was multi-threaded.
+
+ftn-6418 ftn: ACCEL AXPY, File = axpy-full.F90, Line = 44 
+  If not already present: allocate memory and copy whole array "x" to accelerator, free at line 48 (acc_copyin).
+
+ftn-6416 ftn: ACCEL AXPY, File = axpy-full.F90, Line = 44 
+  If not already present: allocate memory and copy whole array "y" to accelerator, copy back at line 48 (acc_copy).
+
+ftn-6823 ftn: THREAD AXPY, File = axpy-full.F90, Line = 44 
+  A region starting at line 44 and ending at line 48 was multi-threaded.
+
+ftn-6823 ftn: THREAD AXPY, File = axpy-full.F90, Line = 44 
+  A region starting at line 44 and ending at line 48 was multi-threaded.
+
+ftn-6005 ftn: SCALAR AXPY, File = axpy-full.F90, Line = 45 
+  A loop starting at line 45 was unrolled 2 times.
+
+ftn-6430 ftn: ACCEL AXPY, File = axpy-full.F90, Line = 45 
+  A loop starting at line 45 was partitioned across the threadblocks and the 256 threads within a threadblock.
+
+ftn-3001 ftn: IPA AXPY, File = axpy-full.F90, Line = 53 
+  Leaf "print_array"(axpy-full.F90:10) was inlined.
+
+ftn-6286 ftn: VECTOR AXPY, File = axpy-full.F90, Line = 53 
+  A loop starting at line 53 was not vectorized because it contains input/output operations at line 53.
+
+   58.                 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

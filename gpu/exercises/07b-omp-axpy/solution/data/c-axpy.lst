@@ -1,0 +1,76 @@
+Legend:
+
+  A - recognized idiom
+  D - deleted loop
+  I - callee inlined here
+  L - interleaved loop
+  M - multithreaded
+  P - peeled loop
+  S - distributed loop
+  U - completely unrolled loop
+  u - partially unrolled loop
+  V - vectorized loop
+  X - loop interchanged with enclosing loop
+  Z - versioned loop for LICM
+  + - additional messages below
+
+----------
+
+ 1.           // SPDX-FileCopyrightText: 2025 CSC - IT Center for Science Ltd. <www.csc.fi>
+ 2.           //
+ 3.           // SPDX-License-Identifier: MIT
+ 4.           
+ 5.           #include <cstdio>
+ 6.           #include <string>
+ 7.           #include <vector>
+ 8.           #include "helper_functions.hpp"
+ 9.           
+10.           
+11.           int main(int argc, char* argv[]) {
+12.               // Array size
+13.               int n = 102400;
+14.               if (argc > 1) {
+15.                   n = std::stoi(argv[1]);
+16.               }
+17.               printf("Array size n = %d\n", n);
+18.           
+19.               double alpha;
+20.               std::vector<double> x(n), y(n);
+21.           
+22.               // Initialization
+23.               alpha = 3.0;
+24.               for (int i = 0; i < n; i++) {
+25.                   double frac = 1.0 / ((double) (n - 1));
+26.                   x[i] = i * frac;
+27.                   y[i] = i * frac * 100;
+28.               }
+29.           
+30.               // Print input values
+31.               printf("Input:\n");
+32.               printf("a = %8.4f\n", alpha);
+33.               print_array("x", x);
+34.               print_array("y", y);
+35.           
+36.               // Calculate axpy
+37.               double *_x = x.data(), *_y = y.data();
+38. + I 0--<>     #pragma omp target teams distribute parallel for map(to: _x[0:n]) map(tofrom: _y[0:n])
+39. +   M---<     for (int i = 0; i < n; i++) {
+40. +   M             _y[i] += alpha * _x[i];
+41.     M--->     }
+42.           
+43.               // Print output values
+44.               printf("Output:\n");
+45.               print_array("y", y);
+46.           
+47.               return 0;
+48.           }
+
+----------
+
+38. loop not distributed: loop is not bottom tested
+38. loop not distributed: use -Rpass-analysis=loop-distribute for more info
+38. loop not vectorized
+
+39. Outlined parallel region
+
+40. hoisting bitcast
