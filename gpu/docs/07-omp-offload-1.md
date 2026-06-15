@@ -107,7 +107,7 @@ int main() {
   // Declare data mapping
   // - to: copy from host to device at the beginning
   // - from: copy from device to host at the end
-  #pragma omp target data map(to:x[:n]) map(tofrom:y[:n])
+  #pragma omp target data map(to:x[0:n]) map(tofrom:y[0:n])
   {
     // Execute kernel on device
     #pragma omp target teams distribute parallel for
@@ -135,8 +135,9 @@ int main() {
   - Creating teams and threads on device: `teams`, `parallel`
   - Distributing work across the created teams and threads: `distribute`, `for`/`do`
 - Controlling data movement
-  - Structured data regions: `data`
-  - Unstructured data regions: `enter data`, `exit data`
+  - Data mapping: `map`
+  - Structured data regions: `target data`
+  - Unstructured data regions: `target enter data`, `target exit data`
 
 
 # Target construct
@@ -346,7 +347,7 @@ end do
 
 # Collapsing loops
 
-- The `collapse` clause can be used to combine nested loops to a single large loop
+- The `collapse(n)` clause can be used to combine *n* nested loops to a single large loop
 
 ::::::{.columns}
 :::{.column}
@@ -364,7 +365,7 @@ for (int i = 0; i < N; i++)
 ```fortranfree
 !$omp target
 !$omp teams distribute parallel do &
-!$omp collapse(2)
+!$omp     collapse(2)
 do i = 1, N
   do j = 1, M
     ...
@@ -474,20 +475,22 @@ end do
 
 - Implicit copy of `a`, `x`, and `y` to the device when the `target` region is entered and back when it is exited
 
-# Explicit mapping: Structured data region
+# Explicit mapping
 
-**`target data map(type: var1, var2, ...)`**
+**`target map(type: var1, var2, ...)`**
 
-- Define data mapping for a structured block that may contain multiple target regions
-  - Only maps data, one still needs to define a target region to execute code on the device
+- Define data mapping for the associated target region
 - The mapping `type` is one of:
   - `to`: copy data to device upon entry to the region
   - `from`: copy data from device upon exit from the region
   - `tofrom`: copy data to device upon entry and back on exit
   - `alloc`: allocate on the device (no copy, uninitialised)
+- Mapping arrays:
+  - C: `data[first index : size]`
+  - Fortran: `data(first index : inclusive last index)`
 
 
-# Example: Structured data region
+# Example: Explicit mapping
 
 ::::::{.columns}
 :::{.column}
@@ -512,7 +515,8 @@ real(8) :: a
 real(8), dimension(n) :: x, y
 ! some code to initialise x and y
 
-!$omp target map(to: x(1:n)) map(tofrom: y(1:n))
+!$omp target map(to: x(1:n)) &
+!$omp        map(tofrom: y(1:n))
 !$omp teams distribute parallel do
 do i = 1, n
   y(i) = a * x(i) + y(i)
@@ -524,7 +528,15 @@ end do
 ::::::
 
 - Both `x` and `y` are copied the device, but only `y` is copied back to the host
-- **Note!** Syntax in C: `data[first index : size]`<br>and in Fortran: `data(first index : inclusive last index)`
+
+
+# Structured data region
+
+**`target data map(type: var1, var2, ...)`**
+
+- Define data mapping for a structured block that may contain multiple target regions
+  - Only maps data, one still needs to define a target region to execute code on the device
+- The mapping `type` is like in `target map`
 
 # Example: Data mapping over multiple target regions
 
@@ -629,7 +641,7 @@ end do
 
 
 
-# Alternative explicit mapping: Unstructured data regions
+# Unstructured data regions
 
 **`target enter data map(type: var1, var2, ...)`**
 
