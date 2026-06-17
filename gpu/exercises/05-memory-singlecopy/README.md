@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2010 CSC - IT Center for Science Ltd. <www.csc.fi>
+
+SPDX-License-Identifier: CC-BY-4.0
+-->
+
 # Avoiding recurring host-device memory transfers
 
 Previously in [exercise 1](../01-explicit-vs-implicit/README.md), data was repeatedly:

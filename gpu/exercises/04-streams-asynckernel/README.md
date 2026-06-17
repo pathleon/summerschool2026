@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2010 CSC - IT Center for Science Ltd. <www.csc.fi>
+
+SPDX-License-Identifier: CC-BY-4.0
+-->
+
 # Executing multiple GPU kernels concurrently with HIP streams
 
 This exercise demonstrates how multiple HIP streams can be used to execute independent GPU kernels concurrently. 
