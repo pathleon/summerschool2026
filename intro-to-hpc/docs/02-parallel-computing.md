@@ -1,6 +1,12 @@
+<!--
+SPDX-FileCopyrightText: 2010 CSC - IT Center for Science Ltd. <www.csc.fi>
+
+SPDX-License-Identifier: CC-BY-4.0
+-->
+
 ---
 title:  Parallel computing
-event:  CSC Summer School in High-Performance Computing 2025
+event:  CSC Summer School in High-Performance Computing 2026
 lang:   en
 ---
 
@@ -25,7 +31,6 @@ lang:   en
 
 </div>
 <div class=column>
-<!-- Copyright CSC -->
  ![](img/compp.svg){.center width=100%}
 </div>
 
@@ -59,10 +64,7 @@ lang:   en
   - Cores may need to interact with each other, e.g. exchange information about data on domain boundaries
 </div>
 <div class=column>
-
-<!-- Copyright CSC -->
  ![](img/eparallel.svg){.center width=80%}
-
 </div>
 
 
@@ -70,7 +72,6 @@ lang:   en
 
 - Task farm (main / worker)
 
-<!-- Copyright CSC -->
  ![](img/farm.svg){.center width=60%}
 
 <br>
@@ -215,7 +216,7 @@ Loop can be parallelized over `i`
 <div class=column>
 Local dependencies
 
-- Stencils: 
+- Stencils:
   ```
   v[i,j] = u[i-1, j] + u[i+1, j] + u[i, j-1] ...
   ```
@@ -226,11 +227,10 @@ Local dependencies
 <div class=column>
 Global dependencies
 
-- Fourier transform 
+- Fourier transform
   $X_k = \sum_{n=0}^{N-1} x_n \exp(-i \frac{2\pi}{N}k \cdot n)$
 - Linear algebra: $C = A \times B$
 
-  <!-- Copyright CSC -->
   ![](img/matmul.svg){.center width=50%}
 
 - Number of communication events per process increases with number of execution units
@@ -241,7 +241,6 @@ Global dependencies
 Simple domains with similar computational cost
 
 <br>
-<!-- Copyright CSC -->
 ![](img/eparallel.svg){.center width=50%}
 </div>
 
@@ -249,7 +248,6 @@ Simple domains with similar computational cost
 Simple domains with different computational cost
 
 <br>
-<!-- Copyright CSC -->
 ![](img/mandelbrot-domains.png){.center width=40%}
 </div>
 
@@ -259,7 +257,6 @@ Simple domains with different computational cost
 Complex FEM meshes
 <br>
 <br>
-<!-- Copyright CSC / Peter Råback -->
 ![](img/parallel-fem.png){.center width=70%}
 </div>
 
@@ -267,7 +264,6 @@ Complex FEM meshes
 Moving particles
 <br>
 <br>
-<!-- Copyright CSC -->
 ![](img/smooth_particle.svg){.center width=70%}
 </div>
 
@@ -287,8 +283,7 @@ Moving particles
 </div>
 <div class=column>
 
-<!-- Copyright CSC -->
- ![](img/scaling.svg){.center width=80%}
+ ![](img/scaling.svg){.center width=100%}
 
 </div>
 
@@ -304,7 +299,7 @@ Moving particles
 
 The fraction of non-parallelizable parts limits the maximum speedup
 
-![](img/AmdahlsLaw.svg){.center width=50%}
+![](img/amdahl.svg){.center width=60%}
 
 
 # Communication to computation ratio
@@ -355,7 +350,6 @@ Two dimensional decomposition
 
 # Parallel programming models
 
-<!-- Copyright CSC -->
  ![](img/processes-threads.svg){.center width=80%}
 <div class=column>
 **MPI: Processes**

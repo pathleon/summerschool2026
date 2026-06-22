@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2026 CSC - IT Center for Science Ltd. <www.csc.fi>
+//
+// SPDX-License-Identifier: MIT
+
 /*
  * This exercise builds upon the solution of
  * 03-streams-asyncmemcpy.

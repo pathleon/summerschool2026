@@ -79,5 +79,5 @@ int main() {
 
   HIP_ERRCHK(hipFree(d_a));
   free(a);
-  HIP_ERRCHK(hipStreamDestroy(stream));float max_error(float *a, int n)
+  HIP_ERRCHK(hipStreamDestroy(stream));
 }

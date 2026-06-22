@@ -14,11 +14,12 @@ The [solution directory](solution/) contains a model solution and discussion on 
 
 ## Tasks
 
-1. Set OpenMP environment variables to print affinity and run the program:
+1. Edit the provided job script `job.sh` to include the following OpenMP environment to print affinity:
 
        export OMP_DISPLAY_AFFINITY=true
        export OMP_AFFINITY_FORMAT="Process %P level %L thread %0.4n/%0.4N on node %H core %A"
-       srun ./hello.x
+
+   What is the output in the slurm output file?
 
 2. Use OpenMP environment variables to set the number of threads as well as their binding and placement, for example:
 

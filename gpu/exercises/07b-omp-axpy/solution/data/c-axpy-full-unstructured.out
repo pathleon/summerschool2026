@@ -1,0 +1,40 @@
+ACC: Version 6.0 of HIP already initialized, runtime version 60342134
+ACC: Get Device 0
+ACC: Set Thread Context
+ACC: Start transfer 2 items from axpy-full-unstructured.cpp:23
+ACC:       allocate '_x[0:n]' (819200 bytes)
+ACC:       allocate '_y[0:n]' (819200 bytes)
+ACC: End transfer (to acc 0 bytes, to host 0 bytes)
+ACC: Start transfer 2 items from axpy-full-unstructured.cpp:27
+ACC:       present '_x' (0 bytes)
+ACC:       present '_y' (0 bytes)
+ACC: End transfer (to acc 0 bytes, to host 0 bytes)
+ACC: Execute kernel __omp_offloading_73ac72ce_b1007849_main_l27_cce$noloop$form blocks:400 threads:256 from axpy-full-unstructured.cpp:27
+ACC: Start transfer 2 items from axpy-full-unstructured.cpp:27
+ACC:       release present '_y' (0 bytes)
+ACC:       release present '_x' (0 bytes)
+ACC: End transfer (to acc 0 bytes, to host 0 bytes)
+ACC: Start transfer 2 items from axpy-full-unstructured.cpp:37
+ACC:       copy to host '_x[0:n]' (819200 bytes)
+ACC:       copy to host '_y[0:n]' (819200 bytes)
+ACC: End transfer (to acc 0 bytes, to host 1638400 bytes)
+ACC: Start transfer 2 items from axpy-full-unstructured.cpp:42
+ACC:       present '_y' (0 bytes)
+ACC:       present '_x' (0 bytes)
+ACC: End transfer (to acc 0 bytes, to host 0 bytes)
+ACC: Execute kernel __omp_offloading_73ac72ce_b1007849_main_l42_cce$noloop$form blocks:400 threads:256 from axpy-full-unstructured.cpp:42
+ACC: Start transfer 2 items from axpy-full-unstructured.cpp:42
+ACC:       release present '_x' (0 bytes)
+ACC:       release present '_y' (0 bytes)
+ACC: End transfer (to acc 0 bytes, to host 0 bytes)
+ACC: Start transfer 2 items from axpy-full-unstructured.cpp:47
+ACC:       copy to host, free '_y[0:n]' (819200 bytes)
+ACC:       free '_x[0:n]' (819200 bytes)
+ACC: End transfer (to acc 0 bytes, to host 819200 bytes)
+Array size n = 102400
+Input:
+a =   3.0000
+x =   0.0000   0.0000   0.0000   0.0000 ...   1.0000   1.0000   1.0000   1.0000
+y =   0.0000   0.0010   0.0020   0.0029 ...  99.9971  99.9980  99.9990 100.0000
+Output:
+y =   0.0000   0.0010   0.0020   0.0030 ... 102.9970 102.9980 102.9990 103.0000

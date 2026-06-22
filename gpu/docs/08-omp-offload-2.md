@@ -14,7 +14,7 @@ lang:   en
 
 - Asynchronous device execution in OpenMP offload
 - Combining OpenMP offload with CUDA/HIP
-- Device functions
+- Device functions and variables
 
 # Asynchronous execution {.section}
 
@@ -79,7 +79,7 @@ lang:   en
 :::{.column}
 ```c++
 // Launch kernels asynchronously
-#pragma omp target nowait depend(out: x[1:n])
+#pragma omp target nowait depend(out: x[0:n])
 {  ...
    x[i] = a * u[i];
 }
@@ -89,7 +89,7 @@ lang:   en
    y[i] = b * v[i];
 }
 
-#pragma omp target nowait depend(in: x[1:n])
+#pragma omp target nowait depend(in: x[0:n])
 {  ...
    z[i] = c * x[i];
 }
@@ -177,7 +177,7 @@ lang:   en
 - Mixing OpenMP and CUDA/HIP, for example:
   - Use OpenMP for memory management
   - Introduce OpenMP in existing GPU code
-  - Use CUDA/HIP for tightest kernels, otherwise OpenMP
+  - Use CUDA/HIP for most critical kernels, otherwise OpenMP
 - Calling GPU libraries: cublas/hipblas, cufft/hipfft, ...
 - Using MPI: GPU-aware MPI libraries can do GPU-to-GPU memory transfer without going through host
 
@@ -191,7 +191,7 @@ lang:   en
 
 - **`target data use_device_ptr(var1, var2, ...)`**
   - Within the construct, all the listed pointer variables correspond to the device addresses
-  - Use in C for pointer or in Fortran for `c_ptr`
+  - Use in C for pointers or in Fortran for `c_ptr`
 
 - **`target data use_device_addr(var1, var2, ...)`**
   - Similar construct for non-pointer variables
@@ -241,55 +241,94 @@ lang:   en
 - The `iso_c_binding` module can be used to build a Fortran interface to such C library
 
 
-# Alternative: `omp_get_mapped_ptr`
+# Alternative for `use_device_ptr`: `omp_get_mapped_ptr`
 
-- If host pointer *`x`* has been mapped to device with OpenMP,
-  we can get corresponding device address by
+- If host pointer `x` has been mapped to device with OpenMP,
+  we can get the corresponding device pointer `d_x` by
   ```cpp
-  void* d_a = omp_get_mapped_ptr(a, omp_get_device_num())
+  void* d_x = omp_get_mapped_ptr(x, omp_get_device_num())
   ```
 
-# Existing device pointers
+# Existing device pointers: `is_device_ptr`
 
-- If *`d_a`* is already a device pointer (e.g., allocated outside OpenMP),
-  we can instruct OpenMP to use that instead doing mapping:
+- If `d_x` is already a device pointer (e.g., allocated outside OpenMP),
+  we can instruct OpenMP to use that pointer instead doing mapping:
   ```cpp
-  #pragma omp target ... is_device_ptr(d_a) 
+  #pragma omp target ... is_device_ptr(d_x)
   ```
 
-# Device functions {.section}
+# Device functions and variables {.section}
 
-# Device functions
+# Device function and variables
 
-- The `declare target` tells the function that certain functions or variables should be compiled for the device (not just the host CPU)
+- The `declare target` tells the compiler that certain functions or variables should be compiled for the device (not just the host CPU)
   - Analogous to `__device__` in CUDA/HIP
+
+# Example: Device functions in C++
 
 ::::::{.columns}
 :::{.column}
+`main.cpp`:
+
 ```cpp
-#pragma omp declare target
-double fun(double a, double b);
-#pragma omp end declare target
-
-...
-
 #pragma omp target
 #pragma omp teams distribute parallel for
-for (int i = 0; i < NX; i++) {
-  vecC[i] = fun(vecA[i], vecB[i]);
+for (int i = 0; i < n; i++) {
+  z[i] = fun(x[i], y[i]);
 }
 ```
 :::
 :::{.column}
+`kernels.cpp`:
+
 ```cpp
 #pragma omp declare target
-double fun(double a, double b) {
-  return a+b;
+double fun(double x, double y) {
+  return x + y;
 }
 #pragma omp end declare target
 ```
 :::
 ::::::
+
+# Example: Device functions in Fortran
+
+::::::{.columns}
+:::{.column}
+`main.F90`:
+
+```fortranfree
+!$omp target
+!$omp teams distribute parallel do
+do i = 1, n
+  z(i) = fun(x(i), y(i))
+end do
+!$omp end teams distribute parallel do
+!$omp end target
+```
+:::
+:::{.column}
+`kernels.F90`:
+
+```fortranfree
+module kernels
+  implicit none
+contains
+
+  pure function fun(x, y) result(res)
+    real(8), intent(in) :: x, y
+    real(8) :: res
+    !$omp declare target
+
+    res = x + y
+  end function fun
+
+end module kernels
+```
+:::
+::::::
+
+
 
 
 # Summary {.section}
@@ -298,5 +337,5 @@ double fun(double a, double b) {
 - Asynchronous device execution is possible, but requires explicit synchronization
 - OpenMP programs can work in conjuction with CUDA/HIP kernels and GPU libraries
 - Key constructs for interoperability:
-  - `use_device_ptr`: get device pointer for mapping managed by OpenMP
-  - `is_device_ptr`: use non-OpenMP-managed device pointer in device execution
+  - `use_device_ptr`: get device pointer for a data mapping managed by OpenMP
+  - `is_device_ptr`: use a non-OpenMP-managed device pointer for the device execution

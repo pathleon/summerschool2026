@@ -24,7 +24,7 @@ SPDX-License-Identifier: CC-BY-4.0
 - [Basics of streams](04-streams-basics)
 - [Asynchronous kernels](04-streams-asynckernel)
 - [Asynchronous memory copy](04-streams-asyncmemcopy)
-- [Synchronizing with events](04-streams-eventssync)
+- [Timing GPU execution with events](04-streams-timings)
 - [Bonus: Overlapping CPU and GPU execution](04-bonus-cpu-gpu-overlap)
 
 ### Memory management
@@ -42,12 +42,15 @@ SPDX-License-Identifier: CC-BY-4.0
 
 ## Tuesday exercises
 
-### OpenMP offloading
+### OpenMP offload
 
-- [Hello world with OpenMP offloading](07-openmp-hello-world)
-- [Using data environments](07-openmp-sum-dot)
-- [Data movement clauses and reductions](07-openmp-dot-product)
-- [Mimic HIP](07-openmp-mimic-hip)
+- [Hello world](07a-omp-hello)
+- [Calculating axpy](07b-omp-axpy)
+- [Parallel sum](07c-omp-reduction-sum)
+- [Interoperability with HIP](07d-omp-hip-interop)
+- [Device functions](07e-omp-device-functions)
+- [(Bonus) Solving 2D Poisson's equation with Jacobi iteration](07f-omp-poisson)
+- [(Bonus) Heat equation](07g-omp-heat-equation)
 
 ### Multi-GPU programming
 
@@ -61,9 +64,6 @@ SPDX-License-Identifier: CC-BY-4.0
 - [Basics of HIP: Debugging & fixing errors](02-kernels-kernel-errors)
 - [Basics of HIP: 2D Copy with double for loop](02-kernels-copy2d)
 - [Optimization: Matrix transpose](06-optimization-matrix-transpose)
-- [OpenMP offloading: Heat equation](07-openmp-heat-equation)
-- [OpenMP offloading: Interoperability with HIP](07-openmp-hip-interop)
-- [OpenMP offloading: Jacobi](07-openmp-jacobi)
 - [Multi-GPU heat equation](09-multi-gpu-heat-equation)
 
 

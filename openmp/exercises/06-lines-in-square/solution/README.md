@@ -79,9 +79,14 @@ SPDX-License-Identifier: CC-BY-4.0
 
    See `lines.F90`.
 
-   **Note:** Fortran's `random_number` shares a global state in a thread-safe way,
+   **Note:** [OpenMP compliance](https://www.openmp.org/spec-html/5.2/openmpse6.html#x27-260001.6)
+   requires that Fortran's `random_number` is thread safe,
    so the C++ race condition does not occur.
 
-   However, this also means that the random number generation becomes
-   a serialization point and significantly limits parallel performance.
-   To achieve good performance, proper parallel number generation should be used.
+   However, the specification leaves it open how the thread safety is implemented,
+   and also the performance depends on the implementation.
+   With GCC 11, we get expected speed-up when using threads,
+   but with Cray Fortran 19, the execution becomes only slower with threads.
+
+   To achieve good performance and high quality sampling,
+   proper parallel number generation should be used.

@@ -41,8 +41,8 @@ int main(int argc, char* argv[]) {
 // Try to print in synchronized manner
   for (int i=0; i < size; i++) {
     if (rank == i) {
-      printf("Global rank: %d in node %s Local rank: %d using GPU %d\n",
-             rank, processor_name, node_rank, my_device);
+      printf("Global rank: %d in node %s Local rank: %d using GPU id %d out of %d devices\n",
+             rank, processor_name, node_rank, my_device, num_devices);
       fflush(stdout);
     }
     

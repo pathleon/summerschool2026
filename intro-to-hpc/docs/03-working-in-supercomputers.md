@@ -1,6 +1,12 @@
+<!--
+SPDX-FileCopyrightText: 2010 CSC - IT Center for Science Ltd. <www.csc.fi>
+
+SPDX-License-Identifier: CC-BY-4.0
+-->
+
 ---
 title:  Working in supercomputers
-event:  CSC Summer School in High-Performance Computing 2025
+event:  CSC Summer School in High-Performance Computing 2026
 lang:   en
 ---
 
@@ -16,14 +22,13 @@ lang:   en
 
 # Anatomy of a supercomputer
 
-<!-- Copyright CSC -->
 ![](img/cluster_diagram.svg){.center width=100%}
 
 # Connecting to LUMI and CSC supercomputers
 
-- SSH with public key authentication is used to connect the login node
+- SSH with public key authentication is used to connect to the login node
   - <https://github.com/csc-training/summerschool/wiki/Setting-up-CSC-account-and-SSH>
-- Also web interfaces exist
+- Web interfaces also exist
   - <https://www.lumi.csc.fi>
   - <https://www.mahti.csc.fi>
   - <https://www.puhti.csc.fi>
@@ -184,18 +189,11 @@ cc main.c -o main
 
 # Make rules
 
-<div class=column>
 - Make **rules** define how some part of your program is built
-    - **Target**: the output file (or aim) of your rule
-    - **Dependency**: which other targets your target depends on
-    - **Recipe**: how you produce your target
+  - **Target**: the output file (or aim) of your rule
+  - **Dependency**: which other targets your target depends on
+  - **Recipe**: how you produce your target
 - Rules are defined in a file which is by default called `Makefile`
-</div>
-
-<div class=column>
-_A make rule_
-![](img/rule.png){.center width=100%}
-</div>
 
 
 # Example Makefile
@@ -265,7 +263,7 @@ CCFLAGS=-O3
   program/simulation (aka job) to a queue and the system will then execute it
   once the resources are available
     - The queue enables effective and fair resource usage
-    - CSC uses SLURM as the queue system
+    - CSC uses Slurm as the queue system
 
 - When running a job on a supercomputer you need to:
     - Describe how you want to run the job and what resources you need
@@ -273,7 +271,7 @@ CCFLAGS=-O3
     - Submit your job to a queue
 
 
-# Example SLURM batch job script
+# Example Slurm batch job script
 
 ```bash
 #!/bin/bash

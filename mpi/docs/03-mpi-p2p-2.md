@@ -10,6 +10,10 @@ event:  CSC Summer School in High-Performance Computing 2026
 lang:   en
 ---
 
+# Recap / quiz
+
+TODO: Menti access code / QR code
+
 # Outline
 
 - MPI Status parameter
@@ -164,7 +168,7 @@ MPI_Probe(`source`{.input}, `tag`{.input}, `comm`{.input}, `status`{.output})
 - Example: scatter and gather type operations
 
 ```c++
-if (0 == rank) {
+if (rank == 0) {
   for (int i=1; i < ntasks; i++) {
     MPI_Send(&data, 1, MPI_INT, i, 42, MPI_COMM_WORLD);
   }
@@ -224,7 +228,7 @@ MPI_Recv(recvbuf, bufsize, MPI_INT,
          &status);
 ```
 </div>
-- **Note!** Clear code makes it clear that this code will deadlock!
+- **Note!** Clear code makes it clear that this code may deadlock!
 
 
 # Combined send & receive
@@ -251,7 +255,7 @@ MPI_Sendrecv(message, msgsize, MPI_INT,
              &status);
 ```
 
-- **Note!** No deadlock here!
+- **Note!** No risk of deadlock here!
 
 
 # Coping with boundaries
@@ -267,10 +271,10 @@ MPI_Sendrecv(message, msgsize, MPI_INT,
 dst = rank + 1;
 src = rank - 1;
 
-if (0 == rank) {
+if (rank == 0) {
     src = MPI_PROC_NULL;
 }
-if (ntasks - 1 == rank) {
+if (rank == ntasks - 1) {
     dst = MPI_PROC_NULL;
 }
 

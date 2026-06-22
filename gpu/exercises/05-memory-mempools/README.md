@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2010 CSC - IT Center for Science Ltd. <www.csc.fi>
+
+SPDX-License-Identifier: CC-BY-4.0
+-->
+
 # Asynchronous memory allocation and memory pools
 
 The purpose of this exercise is to compare the overhead of different GPU memory allocation strategies and demonstrate how memory pools reduce recurring allocation costs.

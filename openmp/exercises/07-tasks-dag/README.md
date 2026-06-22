@@ -51,3 +51,6 @@ The [solution directory](solution/) contains a model solution and discussion on 
 
    Make sure that the data flow between functions remain correct. The end result should be 30
    as in the serial code.
+
+2. (Bonus) Use Score-P and Vampir to visualize the trace of your implementation.
+   Follow the general instructions in the Score-P exercise.

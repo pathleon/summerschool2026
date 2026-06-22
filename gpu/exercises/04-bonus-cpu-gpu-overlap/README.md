@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2010 CSC - IT Center for Science Ltd. <www.csc.fi>
+
+SPDX-License-Identifier: CC-BY-4.0
+-->
+
 # Overlapping CPU and GPU work
 
 This exercise demonstrates the asynchronocity between the GPU and CPU, and how arbitrary CPU function execution can overlap with GPU kernel execution.

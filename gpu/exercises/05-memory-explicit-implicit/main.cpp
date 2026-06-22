@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2026 CSC - IT Center for Science Ltd. <www.csc.fi>
+//
+// SPDX-License-Identifier: MIT
+
 /*
  * Task is to modify four functions in the code:
  * - implement explicit memory management with hipMalloc and hipMemcpy

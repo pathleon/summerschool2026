@@ -66,3 +66,6 @@ The [solution directory](solution/) contains a model solution and discussion on 
 
    Consider loop scheduling again. Do you get better or worse performance than with `mandelbrot-blocked`? Why?
 
+5. (Bonus) Use Score-P and Vampir to visualize the trace of the different code variants. For example,
+   use the tools to compare the `static` and `dynamic` loop scheduling.
+   Follow the general instructions in the Score-P exercise.

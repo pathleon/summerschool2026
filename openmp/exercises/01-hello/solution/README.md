@@ -29,6 +29,7 @@ SPDX-License-Identifier: CC-BY-4.0
    Note that each thread calls `omp_get_num_threads()` in this code.
    This is unnecessary and we'll see later how to execute this function call only with a single thread.
 
+
 ## Bonus task: Conditional compilation
 
 1. The linking fails to undefined reference to `omp_get_thread_num()` and `omp_get_num_threads()`.

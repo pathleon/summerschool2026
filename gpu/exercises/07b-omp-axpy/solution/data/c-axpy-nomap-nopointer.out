@@ -1,0 +1,10 @@
+ACC: Version 6.0 of HIP already initialized, runtime version 60342134
+ACC: Get Device 0
+ACC: Set Thread Context
+ACC: Start transfer 2 items from axpy-nomap-nopointer.cpp:37
+ACC:       allocate, copy to acc 'y' (24 bytes)
+ACC:       allocate, copy to acc 'x' (24 bytes)
+ACC: End transfer (to acc 48 bytes, to host 0 bytes)
+Memory access fault by GPU node-4 (Agent handle: 0x4b6df0) on address 0x34b000. Reason: Unknown.
+Failed to allocate file: Bad file descriptor
+GPU core dump failed

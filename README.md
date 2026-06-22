@@ -1,6 +1,5 @@
 <!--
-SPDX-FileCopyrightText: 2016 CSC - IT Center for Science Ltd. <www.csc.fi>
-SPDX-FileCopyrightText: CSC Training <www.csc.fi>
+SPDX-FileCopyrightText: 2010 CSC - IT Center for Science Ltd. <www.csc.fi>
 
 SPDX-License-Identifier: CC-BY-4.0
 -->
@@ -22,10 +21,10 @@ The slides are available in
 ## Exercises
 
 - Feel free to fork this repository to work through the exercises.
-- [General exercise instructions](exercise-instructions.md)
+- General instructions: [LUMI](README_LUMI.md) and [Mahti](README_Mahti.md)
 - Session-specific material linked in the schedule below
 
-## Schedule (draft)
+## Schedule
 
 *In addition to lunch, dinner, and refreshments in the daily schedule, we have every day available next to the lecture room:*
 - *09:00–17:00 Coffee, tea, water*
@@ -170,9 +169,9 @@ The slides are available in
 | Time  | Topic |
 | ----  | ----- |
 | 07:45 | Breakfast
-| 09:00 | [Putting It All Together: HPC Applications at Scale](application-design-deployment)
-| 11:00 | [Closing](https://csc-training.github.io/summerschool/)
-| 11:30 | Hotel check-out
+| 09:00 | Time to pack. Hotel check-out by 10:00 (luggage can be left in the lecture room)
+| 09:30 | [Putting It All Together: HPC Applications at Scale](application-design-deployment)
+| 11:30 | [Closing](https://csc-training.github.io/summerschool/)
 | 12:00 | Lunch
 | 13:00 | Transport to Helsinki city
 

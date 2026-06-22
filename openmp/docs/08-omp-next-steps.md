@@ -25,13 +25,36 @@ lang:   en
   - Reduce fork-join overhead, e.g. combine multiple parallel loops into one large parallel region
   - Potential for better cache re-usage
 - Parallelise outermost loops if possible
-  - Move PARALLEL DO construct outside of inner loops
+  - Move `parallel for / do` construct outside of inner loops
+  - `collapse` may provide additional parallelism
 - If using tasks: ensure all threads have a task to work on
+
+# Recap / quiz
+
+TODO: Menti access code / QR code
+
+# OpenMP summary
+
+- OpenMP is an application programming interface (API) for thread-based parallelisation
+    - Compiler directives, runtime API, environment variables
+    - Relatively easy to get started but specially efficient and/or real-world
+      parallelisation non-trivial
+- Features touched in this intro
+    - Parallel regions, data-sharing attributes
+    - Work-sharing, reductions, execution control
+    - Tasks and task dependencies
 
 # Things that we did not cover
 
 - sections construct
-- scheduling clauses of `for`/`do` constructs
 - taskgroup and taskloop constructs
 - simd construct
+- constructs for loop transformations (tile, unroll, ...)
 - ...
+
+# Web resources
+
+- OpenMP homepage: <http://openmp.org/>
+- Good online tutorial: <https://computing.llnl.gov/tutorials/openMP/>
+- More online tutorials: <http://openmp.org/wp/resources/#Tutorials>
+

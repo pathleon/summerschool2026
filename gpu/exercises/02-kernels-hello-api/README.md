@@ -20,4 +20,4 @@ Compile and run a simple HIP test program provided as `hello.cpp`.
 Once you've successfully compiled and run the code, you can select the second exercise
 
 Please follow the system-specific instructions provided in the
-[exercise instructions](../../../exercise-instructions-lumi.md).
+exercise instructions for [LUMI](../../../README_LUMI.md) or [Mahti](../../../README_Mahti.md).

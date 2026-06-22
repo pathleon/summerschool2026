@@ -1,0 +1,10 @@
+ACC: Version 6.0 of HIP already initialized, runtime version 60342134
+ACC: Get Device 0
+ACC: Set Thread Context
+ACC: Start transfer 0 items from hello-01.cpp:14
+ACC: End transfer (to acc 0 bytes, to host 0 bytes)
+ACC: Execute kernel __omp_offloading_73ac72ce_c4009b7b_main_l14 blocks:1 threads:1 from hello-01.cpp:14
+ACC: Start transfer 0 items from hello-01.cpp:14
+ACC: End transfer (to acc 0 bytes, to host 0 bytes)
+Hello from host!
+Hello from device!

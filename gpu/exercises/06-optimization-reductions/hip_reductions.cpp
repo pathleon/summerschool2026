@@ -10,7 +10,7 @@
 #include <cmath>
 #include <limits>
 
-#include "../../../error_checking.hpp"
+#include "../error_checking.hpp"
 
 // ==========================================================
 // 1) Naive: each thread atomically adds its grid-stride sum
@@ -50,6 +50,7 @@ __global__ void reduce_naive_blockatomic(const double* __restrict__ in,
 __global__ void reduce_shared_atomic(const double* __restrict__ in,
                                      double* __restrict__ out,
                                      size_t N)
+{
 }
 
 

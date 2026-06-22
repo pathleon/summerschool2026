@@ -24,26 +24,26 @@ The [solution directory](solution/) contains a model solution and discussion on 
 
        ftn -O3 -fopenmp hello.F90 -o hello.x
 
-2. Run the program on a single CPU core:
+2. Use the provided job script `job.sh` to run the program on a single CPU core:
 
-       srun -p debug --nodes=1 --ntasks-per-node=1 --cpus-per-task=1 -t 0:10:00 ./hello.x
+       sbatch job.sh
 
    and then on 4 cores:
 
-       srun -p debug --nodes=1 --ntasks-per-node=1 --cpus-per-task=4 -t 0:10:00 ./hello.x
+       sbatch --cpus-per-task=4 job.sh
 
    How many lines of output you get?
 
-3. You can control the number of threads explicitly with `OMP_NUM_THREADS` environment variable:
+3. You can control the number of threads explicitly with `OMP_NUM_THREADS` environment variable.
+   Edit the job script to fix the number of threads to a fixed value of 2:
 
        export OMP_NUM_THREADS=2
-       srun -p debug --nodes=1 --ntasks-per-node=1 --cpus-per-task=4 -t 0:10:00 ./hello.x
+
+   Submit the updated job on 4 cores:
+
+       sbatch --cpus-per-task=4 job.sh
 
    How many lines of output you get?
-
-   Note: to unset the environment variable, do:
-
-       unset OMP_NUM_THREADS
 
 4. Try out different numbers of threads. Do you get expected outputs?
 

@@ -30,7 +30,7 @@ lang:   en
 # Using LUMI beyond the school
 
 <div style="position: absolute; left:10.0em; top:0.8em">
-![](img/lumi_consortium.png){.center width=80%}
+![](https://a3s.fi/summerschool/assets/images/lumi_consortium.png){.center width=80%}
 </div>
 
 :::::: {.columns}
@@ -110,16 +110,16 @@ lang:   en
 # Acknowledgements
 
 <div style="position: absolute; left:0.0em; top:3.0em">
-![](img/csc-logo.svg){.center width=75%}
+![](https://a3s.fi/summerschool/assets/images/csc-logo.svg){.center width=75%}
 </div>
 <div style="position: absolute; left:18.0em; top:5.5em">
-![](img/eurocc-logo.svg){.center width=45%}
+![](https://a3s.fi/summerschool/assets/images/eurocc-logo.svg){.center width=45%}
 </div>
 <div style="position: absolute; left:-2.0em; top:14.0em">
-![](img/bull-logo.svg){.center width=50%}
+![](https://a3s.fi/summerschool/assets/images/bull-logo.svg){.center width=50%}
 </div>
 <div style="position: absolute; left:15.0em; top:15.3em">
-![](img/eviden-logo.svg){.center width=55%}
+![](https://a3s.fi/summerschool/assets/images/eviden-logo.svg){.center width=55%}
 </div>
 
 

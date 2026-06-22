@@ -20,11 +20,14 @@ int main(int argc, char* argv[])
     }
     printf("Samples: %d\n", N);
 
-    // Seed (random by default)
-    std::random_device rd;
-    int seed = static_cast<int>(rd());
+    // Seed
+    int seed;
     if (argc > 2) {
         seed = std::stoi(argv[2]);
+    } else {
+        // Random seed by default
+        std::random_device rd;
+        seed = static_cast<int>(rd());
     }
     printf("Seed: %d\n", seed);
 

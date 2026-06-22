@@ -33,6 +33,16 @@ lang:   en
 - HIP/CUDA has functionality for intranode peer-to-peer data movement
 - MPI and RCCL/NCCL can be use both for intra- and internode data movement
 
+# GPU-GPU Communication through MPI
+
+- GPUs have dedicated network interfaces (LUMI)
+- We want avoid host-device data copies in GPU-to-GPU communication
+- GPU aware MPI libraries support direct GPU-GPU transfers
+  - Can take a pointer to device buffer 
+- Sending custom MPI datatypes falls back to communication via host
+  - Data packing/unpacking must be implemented application-side on GPU
+- On LUMI: Enable GPU-to-GPU support in MPI
+  - `export MPICH_GPU_SUPPORT_ENABLED=1`
 
 # Multi-GPU Programming Models
 
@@ -56,9 +66,11 @@ lang:   en
   - Same programming approach for inter- and intranode data movement
 - Very similar MPI programming as with CPUs
 
+
 # Assuming one GPU per process: LUMI
 
-- Set environment variables prior to executing binary
+- **Problem**: Each process on a node sees all available GPUs ⇒ oversubscription!
+- **Solution \#1**: Limit visible GPUs based on `SLURM_LOCALID`:
   - `export ROCR_VISIBLE_DEVICES=$SLURM_LOCALID` on [LUMI-G](https://docs.lumi-supercomputer.eu/runjobs/scheduled-jobs/lumig-job/)
   - `select_gpu` script:
 ```shell
@@ -67,15 +79,14 @@ export ROCR_VISIBLE_DEVICES=$SLURM_LOCALID
 exec $*
 ```
   - `srun ... ./select_gpu <my_binary>`
-- Enable GPU support in MPI
-  - `export MPICH_GPU_SUPPORT_ENABLED=1`
+- For NVidia based systems: `CUDA_VISIBLE_DEVICES`
 
-# Sharing GPUs among processes with MPI
+# Selecting one GPUs per process with MPI
 
-**Effectively one gpu per process**
-
+- **Solution \#2**: Use MPI to hand out GPUs at start of program
+   - Effectively one gpu per process
 - Idea
-  1. Split the global communicator to one per shared memory space
+  1. Split the global communicator to one per shared memory space (i.e. *node*)
   2. Get rank within those communicator and pick a GPU based on that number
 
 ```c++
@@ -87,8 +98,6 @@ hipGetDeviceCount(&deviceCount);
 hipSetDevice(nodeRank % deviceCount);
 ```
 
-- Still on LUMI: Enable GPU support in MPI
-  - `export MPICH_GPU_SUPPORT_ENABLED=1`
 
 # Many GPUs per Process
 
@@ -162,12 +171,6 @@ for(int n = 0; n < num_devices; n++) {
 - [Specification documentation](https://www.openmp.org/spec-html/5.2/openmpse79.html)
 
 
-# GPU-GPU Communication through MPI
-
-* GPU aware MPI libraries support direct GPU-GPU transfers
-  * Can take a pointer to device buffer (avoids host/device data copies)
-* Sending custom MPI datatypes falls back to communication via host
-  * Data packing/unpacking must be implemented application-side on GPU
 
 # Device management: HIP
 

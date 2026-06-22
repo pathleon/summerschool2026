@@ -13,13 +13,13 @@ lang:   en
 # Communicators in MPI
 
 - So far we have used the `MPI_COMM_WORLD` communicator
-    - "World" refers to all MPI processes started with `mpirun` or similar call
+    - "World" refers to all MPI processes started with `mpiexec` / `srun` etc.
 
 - More generally, an MPI communicator determines the "communication universe"
     - Each process has a unique integer identifier (the **rank**) within **each communicator it belongs to**
     - `MPI_COMM_WORLD` is a special communicator created by MPI at startup
 
-- Can create new communicators for interesting communication patterns
+- Can create new communicators for special communication patterns
     - Eg: task level parallelism with process groups performing separate tasks
 
 # Communicator splitting

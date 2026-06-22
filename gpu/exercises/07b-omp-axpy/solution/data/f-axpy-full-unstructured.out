@@ -1,0 +1,44 @@
+ACC: Version 6.0 of HIP already initialized, runtime version 60342134
+ACC: Get Device 0
+ACC: Set Thread Context
+ACC: Start transfer 2 items from axpy-full-unstructured.F90:25
+ACC:       allocate 'x(?:?)' (819200 bytes)
+ACC:       allocate 'y(?:?)' (819200 bytes)
+ACC: End transfer (to acc 0 bytes, to host 0 bytes)
+ACC: Start transfer 2 items from axpy-full-unstructured.F90:29
+ACC:       present 'x(:)' (819200 bytes)
+ACC:       present 'y(:)' (819200 bytes)
+ACC: End transfer (to acc 0 bytes, to host 0 bytes)
+ACC: Execute kernel axpy_$ck_L29_1_cce$noloop$form blocks:400 threads:256 async(auto) from axpy-full-unstructured.F90:29
+ACC: Wait async(auto) from axpy-full-unstructured.F90:35
+ACC: Start transfer 2 items from axpy-full-unstructured.F90:35
+ACC:       release present 'x(:)' (819200 bytes)
+ACC:       release present 'y(:)' (819200 bytes)
+ACC: End transfer (to acc 0 bytes, to host 0 bytes)
+ACC: Wait async(auto) from axpy-full-unstructured.F90:40
+ACC: Start transfer 2 items from axpy-full-unstructured.F90:40
+ACC:       copy to host 'x(?:?)' (819200 bytes)
+ACC:       copy to host 'y(?:?)' (819200 bytes)
+ACC: End transfer (to acc 0 bytes, to host 1638400 bytes)
+ACC: Start transfer 2 items from axpy-full-unstructured.F90:45
+ACC:       present 'x(:)' (819200 bytes)
+ACC:       present 'y(:)' (819200 bytes)
+ACC: End transfer (to acc 0 bytes, to host 0 bytes)
+ACC: Execute kernel axpy_$ck_L45_4_cce$noloop$form blocks:400 threads:256 async(auto) from axpy-full-unstructured.F90:45
+ACC: Wait async(auto) from axpy-full-unstructured.F90:49
+ACC: Start transfer 2 items from axpy-full-unstructured.F90:49
+ACC:       release present 'x(:)' (819200 bytes)
+ACC:       release present 'y(:)' (819200 bytes)
+ACC: End transfer (to acc 0 bytes, to host 0 bytes)
+ACC: Wait async(auto) from axpy-full-unstructured.F90:51
+ACC: Start transfer 2 items from axpy-full-unstructured.F90:51
+ACC:       free 'x(?:?)' (819200 bytes)
+ACC:       copy to host, free 'y(?:?)' (819200 bytes)
+ACC: End transfer (to acc 0 bytes, to host 819200 bytes)
+Array size n = 102400
+Input:
+a =   3.0000
+x =   0.0000   0.0000   0.0000   0.0000 ...   1.0000   1.0000   1.0000   1.0000
+y =   0.0000   0.0010   0.0020   0.0029 ...  99.9971  99.9980  99.9990 100.0000
+Output:
+y =   0.0000   0.0010   0.0020   0.0030 ... 102.9970 102.9980 102.9990 103.0000

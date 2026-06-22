@@ -1,6 +1,12 @@
+<!--
+SPDX-FileCopyrightText: 2010 CSC - IT Center for Science Ltd. <www.csc.fi>
+
+SPDX-License-Identifier: CC-BY-4.0
+-->
+
 ---
 title:  "Case study: Heat equation"
-event:  CSC Summer School in High-Performance Computing 2025
+event:  CSC Summer School in High-Performance Computing 2026
 lang:   en
 ---
 
@@ -8,20 +14,10 @@ lang:   en
 
 # Heat equation
 
-<div class=column>
-
 - Partial differential equation that describes the variation of temperature in a given region over time
   $$\frac{\partial u}{\partial t} = \alpha \nabla^2 u$$
 - Time-dependent temperature field: $u(x, y, z, t)$
 - Thermal diffusivity constant: $\alpha$
-
-</div>
-
-<div class=column>
-
- ![](img/pot.png){.center width=60%}
-
-</div>
 
 
 # Numerical solution
@@ -52,8 +48,6 @@ lang:   en
 
 - Temperature at each grid point can be updated independently
 - Data can be distributed with domain decomposition
-
-  ![](img/domain.svg){.center width=60%}
 
 # Solving heat equation in parallel
 

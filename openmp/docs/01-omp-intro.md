@@ -43,6 +43,29 @@ lang:   en
   - Use MPI between nodes and OpenMP within a node
   - OpenMP can improve scaling and reduce memory usage in contrast to plain MPI
 
+
+# Parallel programming models
+
+ ![](img/processes-threads.svg){.center width=80%}
+<br>
+<div class=column>
+**MPI: Processes**
+
+- Independent execution units
+- Have their **own** memory space
+- MPI launches N processes at application startup
+- Works over multiple nodes
+</div>
+<div class=column>
+
+**OpenMP: Threads**
+
+- Threads **share** memory space
+- Threads are created and destroyed (parallel regions)
+- Limited to a single node
+</div>
+
+
 # OpenMP in practice {.section}
 
 # Programming OpenMP
@@ -86,15 +109,14 @@ lang:   en
 # Launching an OpenMP program
 
 - An OpenMP program can be executed as a normal executable
-- By default, the runtime decides the number of threads
-  - Can be changed via environment variables or by additional clauses (see the next slide)
+- By default, the number of threads is decided by the runtime
+  - Default is often the number of CPU cores available for the process
+  - Can be controlled by environment variables or by additional clauses (see the next slide)
   - Other environment variables exists too for controlling the execution
-- When launching the program with the `srun` launcher on CSC supercomputers, the number of threads is set automatically to `--cpus-per-task`
 
 
 # Controlling the number of threads
 
-- By default, the number of threads is up to the implementation to decide
 - The `OMP_NUM_THREADS` environment variable can be used to set the number of threads launched in the `parallel` region
   - Example: set `export OMP_NUM_THREADS=4` before executing the program
 - Alternatively, the `num_threads` clause can be used to fix the number of threads within the code
@@ -142,18 +164,18 @@ lang:   en
 ```c++
 #pragma omp parallel
 {
-  // This line is executed with multiple threads
+  // This line is executed by all threads
   printf("Thread created\n");
 
   #pragma omp for
   for (int i = 0; i < n; i++) {
-    // This loop iteration is executed only by
-    // one thread
+    // Loop iterations are executed by
+    // different threads
     print("Thread running iteration %d\n", i);
   }
 
 
-  // This line is executed with multiple threads
+  // This line is executed by all threads
   printf("Thread loop done\n");
 }
 ```
@@ -163,18 +185,18 @@ lang:   en
 ```fortranfree
 !$omp parallel
 
-  ! This line is executed with multiple threads
+  ! This line is executed by all threads
   print *, "Thread created"
 
   !$omp do
   do i = 1, n
-    ! This loop iteration is executed only by
-    ! one thread
+    ! Loop iterations are executed by
+    ! different threads
     print *, "Thread running iteration", i
   end do
   !$omp end do
 
-  ! This line is executed with multiple threads
+  ! This line is executed by all threads
   print *, "Thread loop done"
 !$omp end parallel
 ```
@@ -185,7 +207,8 @@ lang:   en
 
 - In many cases composite directives are convenient
 
-<div class=column>
+::::::{.columns}
+:::{.column}
 ```c++
 #pragma omp parallel for
 for (int i = 0; i < n; i++) {
@@ -193,9 +216,8 @@ for (int i = 0; i < n; i++) {
 
 }
 ```
-</div>
-
-<div class=column>
+:::
+:::{.column}
 ```fortranfree
 !$omp parallel do
 do i = 1, n
@@ -203,7 +225,37 @@ do i = 1, n
 end do
 !$omp end parallel do
 ```
-</div>
+:::
+::::::
+
+
+# Collapsing loops
+
+- The `collapse(n)` clause can be used to combine *n* nested loops to a single large loop
+
+::::::{.columns}
+:::{.column}
+```c++
+#pragma omp parallel for collapse(2)
+for (int i = 0; i < n; i++) {
+  for (int j = 0; j < m; j++) {
+    ...
+  }
+}
+```
+:::
+:::{.column}
+```fortranfree
+!$omp parallel do collapse(2)
+do i = 1, n
+  do j = 1, m
+    ...
+  end do
+end do
+!$omp end parallel do
+```
+:::
+::::::
 
 
 # Fortran: `workshare` directive

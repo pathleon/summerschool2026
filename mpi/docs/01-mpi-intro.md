@@ -31,9 +31,9 @@ lang:   en
 
 # MPI standard and implementations
 
-- MPI is a standard, first version (1.0) published in 1994, latest (4.1) in 2023
+- MPI is a standard, first version (1.0) published in 1994, latest (5.0) in 2025
   - <https://www.mpi-forum.org/docs/>
-- The MPI standard is implemented by different MPI implementations
+- There are different implementations of the MPI standard
   - [OpenMPI](http://www.open-mpi.org/)
   - [MPICH](https://www.mpich.org/)
   - [Intel MPI](https://software.intel.com/content/www/us/en/develop/tools/oneapi/components/mpi-library.html)
@@ -66,10 +66,38 @@ lang:   en
 
 - MPI program is launched as a set of *independent processes*
 - Typically, every process executes the *same program executable (code)*, but they have a *different state*
-  - Each process has a unique *rank* (an index ranging from 0 to N-1)
-  - Processes can perform different tasks and handle different data based on their rank
+  - Processes can reside in different nodes (or even in different computers)
+- The way to launch parallel program depends on the computing system
+  - MPI standard specifies **`mpiexec`** as recommendation
+  - With Slurm one often uses **`srun`**
 - MPI supports also dynamic spawning of processes and launching *different* programs communicating with each other
   - Not covered here
+
+# MPI ranks
+
+<div class="column">
+- MPI runtime assigns each process a unique rank (index)
+    - identification of the processes
+    - ranks range from 0 to N-1
+- Processes can perform different tasks and handle different data based
+  on their rank
+</div>
+<div class="column">
+```c
+double a;
+if (rank == 0) {
+   a = 1.0;
+   ...
+}
+else if (rank == 1) {
+   a = 0.7;
+   ...
+}
+...
+write("outfile_rank.dat", data)
+```
+</div>
+
 
 
 # Data model in MPI
@@ -80,9 +108,7 @@ lang:   en
 ![](img/data-model.png){.center width=100%}
 
 
-# Interlude
-
-Message passing game
+# Interlude: Message passing game {.section}
 
 
 # MPI in practice {.section}
@@ -201,7 +227,7 @@ MPI_Function(`input_arg`{.input}, `output_arg`{.output})
 
 MPI_Init(...)
   : Initializes the MPI execution environment
-  : Note! C interface include command line arguments
+  : Note! The C interface includes command line arguments
 
 MPI_Finalize()
   : Terminates the MPI execution environment
@@ -251,11 +277,11 @@ ftn -o my_mpi_prog my_mpi_code.F90
 
 # MPI communicator
 
-- An object connecting a group of processes
-- Specifies the communication context
+- An object defining a group of processes
 - A special communicator `MPI_COMM_WORLD` contains all the processes
 - A process can belong to multiple communicators
   - Custom communicators can be defined
+- Communication always happens within a specific communicator
 
 
 # Information about the MPI communicator
@@ -272,7 +298,7 @@ MPI_Comm_rank(`comm`{.input}, `rank`{.output})
 # Synchronization
 
 MPI_Barrier(`comm`{.input})
-  : Waits until all ranks within the communicator reaches the call
+  : Waits until all ranks within the communicator reach the call
 
 <p>
 - Demo: `barrier.c`
@@ -283,6 +309,7 @@ MPI_Barrier(`comm`{.input})
 # Summary
 
 - In parallel programming with MPI, the key concept is a set of independent processes
+- Processes can be identified by their rank
 - Data is always local to the process
 - Processes can exchange data by sending and receiving messages
-- MPI defines procedures for communication and synchronization between processes
+- MPI defines functions/subroutines for communication and synchronization between processes

@@ -1,10 +1,7 @@
-<<<<<<< HEAD
-=======
 // SPDX-FileCopyrightText: 2026 CSC - IT Center for Science Ltd. <www.csc.fi>
 //
 // SPDX-License-Identifier: MIT
 
->>>>>>> origin/main
 /*
  * This solution executes three kernels concurrently
  * using separate HIP streams.

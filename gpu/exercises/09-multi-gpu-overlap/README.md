@@ -50,7 +50,7 @@ $$
 \nabla^2 u(x, y) = f(x, y)
 $$
 
-where $$f$$ is a given function and $$u$$ is the function to be solved.
+where $f$ is a given function and $u$ is the function to be solved.
 
 This equation can be discretized using finite differences as:
 
@@ -58,10 +58,10 @@ $$
 \frac{u_{i+1,j} - 2u_{i,j} + u_{i-1,j}}{\Delta x^2} + \frac{u_{i,j+1} - 2u_{i,j} + u_{i,j-1}}{\Delta y^2} = f_{i,j}
 $$
 
-Assuming a uniform grid where $$\Delta x = \Delta y = h$$, this simplifies to:
+Assuming a uniform grid where $$\Delta x = \Delta y = h,$$ this simplifies to:
 
 $$
-\frac{u_{i+1,j} + u_{i-1,j} + u_{i,j+1} + u_{i,j-1} - 4u_{i,j}}{h^2} = f_{i,j}
+\frac{u_{i+1,j} + u_{i-1,j} + u_{i,j+1} + u_{i,j-1} - 4u_{i,j}}{h^2} = f_{i,j}.
 $$
 
 Rearranging terms gives the standard five-point stencil:
@@ -79,7 +79,7 @@ $$
 u_{i,j}^{(k+1)} = \frac{1}{4} \left( u_{i+1,j}^{(k)} + u_{i-1,j}^{(k)} + u_{i,j+1}^{(k)} + u_{i,j-1}^{(k)} - h^2 f_{i,j} \right)
 $$
 
-where $$u_{i,j}^{(k)}$$ is the value of $$u$$ at grid point $$(i,j)$$ during the $$k$$-th iteration.
+where $u_{i,j}^{(k)}$ is the value of $u$ at grid point $(i,j)$ during the $k$-th iteration.
 
 The problem can be solved in parallel with MPI using domain decomposition: the grid is divided into blocks of rows
 and single MPI task is assigned to each block. The stencil update requires information from the neighbouring  grid points,
@@ -88,8 +88,8 @@ and these ghost rows are updated by the real data from the two neighbouring MPI 
 
 The algorithm comprises of the following steps:
 
-1. Initialize the grid with an initial guess $$u_{i,j}^{(0)}$$ (zeros in the example code).
-2. Iterate over all interior grid points and update $$u_{i,j}^{(k+1)}$$ using values from $$u^{(k)}$$.
+1. Initialize the grid with an initial guess $u_{i,j}^{(0)}$ (zeros in the example code).
+2. Iterate over all interior grid points and update $u_{i,j}^{(k+1)}$ using values from $u^{(k)}$.
 3. Perform halo exchange, i.e. communicate outermost rows between MPI tasks
 4. Repeat until the solution converges, i.e., the difference between successive iterations is below a chosen tolerance.
    In this exercise, we iterate for a fixed number of iterations for simplicity.

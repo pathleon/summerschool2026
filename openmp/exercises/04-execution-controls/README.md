@@ -55,3 +55,9 @@ The [solution directory](solution/) contains a model solution and discussion on 
    way to achieve the same behaviour?
 
 2. Could you use the `atomic` construct to achieve the same behavior as `critical`?
+
+
+## Bonus task: Visualizing trace
+
+1. (Bonus) Use Score-P and Vampir to visualize the trace of the diffent cases.
+   Follow the general instructions in the Score-P exercise.

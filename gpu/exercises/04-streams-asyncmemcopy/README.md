@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2010 CSC - IT Center for Science Ltd. <www.csc.fi>
+
+SPDX-License-Identifier: CC-BY-4.0
+-->
+
 # Using asynchronous memory copies for multiple streams
 
 Previously, kernels were launched concurrently in separate HIP streams, but memory copies back to the host were still blocking.

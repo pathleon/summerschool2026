@@ -6,7 +6,7 @@ program lines
   use omp_lib
   implicit none
   character(len=32) :: arg
-  integer :: N, i, seed_val, seed_size
+  integer :: unit, N, i, seed_val, seed_size
   integer, allocatable :: seed_arr(:)
   real(8) :: x1, y1, x2, y2, dx, dy, distance
   real(8) :: total_distance, average_distance
@@ -21,20 +21,26 @@ program lines
   print '(A, I0)', "Samples: ", N
 
   ! Seed
-  call random_seed(size=seed_size)
-  allocate(seed_arr(seed_size))
   call get_command_argument(2, arg)
   if (len_trim(arg) > 0) then
     read(arg, *) seed_val
-    seed_arr = seed_val
-    call random_seed(put=seed_arr)
   else
-    call random_seed()
-    call random_seed(get=seed_arr)
-    seed_val = seed_arr(1)
+    ! Use /dev/urandom to generate default seed
+    open(newunit=unit, file="/dev/urandom", &
+         access="stream", form="unformatted", status="old")
+    read(unit) seed_val
+    close(unit)
   end if
-  deallocate(seed_arr)
   print '(A, I0)', "Seed: ", seed_val
+
+  ! Get required seed size
+  call random_seed(size=seed_size)
+  allocate(seed_arr(seed_size))
+  ! Fill seed array (not great; should be done better)
+  seed_arr = seed_val
+  ! Set seed
+  call random_seed(put=seed_arr)
+  deallocate(seed_arr)
 
   ! Start timing
   t0 = omp_get_wtime()

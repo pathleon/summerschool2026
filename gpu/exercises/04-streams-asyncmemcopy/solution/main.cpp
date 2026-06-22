@@ -1,10 +1,7 @@
-<<<<<<< HEAD
-=======
 // SPDX-FileCopyrightText: 2026 CSC - IT Center for Science Ltd. <www.csc.fi>
 //
 // SPDX-License-Identifier: MIT
 
->>>>>>> origin/main
 /*
  * This code builds upon the solution of 02-streams-asynckernel.
  *

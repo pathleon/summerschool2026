@@ -1,6 +1,12 @@
+<!--
+SPDX-FileCopyrightText: 2010 CSC - IT Center for Science Ltd. <www.csc.fi>
+
+SPDX-License-Identifier: CC-BY-4.0
+-->
+
 ---
 title:  Introduction to <br>high-performance computing
-event:  CSC Summer School in High-Performance Computing 2025
+event:  CSC Summer School in High-Performance Computing 2026
 lang:   en
 ---
 
@@ -11,12 +17,12 @@ lang:   en
 <br>
 <br>
 
-- Why to use supercomputers?
+- Why use supercomputers?
 - What are supercomputers?
 - Current trends in high-performance computing
 
 
-# Why to use supercomputers? {.section}
+# Why use supercomputers? {.section}
 
 # Supercomputer application areas
 
@@ -28,56 +34,8 @@ lang:   en
   - Life sciences and medicine
   - Renewable energy and fusion research
   - Engineering
-  - Large-scale AI
+  - [Large-scale AI](https://lumi-supercomputer.eu/scaling-the-pre-training-of-large-language-models-of-100b-parameters-to-thousands-of-amd-mi250x-gpus-on-lumi/)
   - ...
-
-# Climate and weather research
-
-<div class=column>
-- Simulating ice sheets, air pollutants, sea-level rise etc.
-- Building short and long-term simulations
-- Simulated areas can span over countries or continents
-- Modeling space weather
-</div>
-<div class=column>
-![](img/climate_greenland.png){.center width=90%}
-</div>
-
-# Covid-19 fast track with Puhti
-
-<div class=column>
-- Modeling particles in airflows
-- A large part of the calculations used for solving turbulent flow
-- A third of Puhti was reserved for running the simulations
-- The results have had an impact on e.g. ventilation instructions and the use of masks
-</div>
-<div class=column>
-![](img/covid.png){.center width=100%}
-</div>
-
-#  Topological superconductors
-
-<div class=column>
-- Topological superconductors are possible building blocks for qubits
-- Based on an elusive quantum state of electrons in thin layers
-- Electronic properties simulated with the density-functional theory
-  - These confirm that experimentally measured signals are due to this special quantum state
-</div>
-<div class=column>
-![](img/majorana.png){.center width=100%}
-</div>
-
-# Large-scale AI
-
-<div class=column>
-- [Training LLMs](https://lumi-supercomputer.eu/scaling-the-pre-training-of-large-language-models-of-100b-parameters-to-thousands-of-amd-mi250x-gpus-on-lumi/)
-  - [OpenEuroLLM](https://lumi-supercomputer.eu/open-euro-llm/)
-</div>
-<div class=column>
-<!-- Source: Adobe Stock, CC BY-SA 3.0 -->
- ![](img/DeepFin.jpg){.center width=100%}
-</div>
-
 
 # What are supercomputers? {.section}
 
@@ -95,9 +53,9 @@ lang:   en
 </div>
 <div class=column>
 <center>
-![](img/cray-x-mp.jpg){.center width=100%}
+![](https://a3s.fi/summerschool/assets/images/cray-x-mp.jpg){.center width=100%}
 Cray X-MP at CSC (1989)<br>
-Image: CSC Archives
+<small>Image: CSC Archives</small>
 </center>
 </div>
 
@@ -113,19 +71,18 @@ Image: CSC Archives
 </div>
 <div class=column>
 <center>
-![](img/lumi.jpg){.center width=100%}
-EuroHPC JU LUMI (HPE Cray EX) <br>at CSC (2021–)
+![](https://a3s.fi/summerschool/assets/images/lumi.jpg){.center width=100%}
+EuroHPC JU LUMI (HPE Cray EX) <br>at CSC (2021–)<br>
+<small>Image: Mikael Kanerva (CSC)</small>
 </center>
 </div>
 
 # Anatomy of a supercomputer
 
-<!-- Copyright CSC -->
 ![](img/cluster_diagram.svg){.center width=100%}
 
 # Closer look on supercomputer nodes
 
-<!-- Copyright CSC -->
  ![](img/anatomy.svg){.center width=55%}
 
 - Supercomputers consist of nodes connected by a high-speed network
@@ -162,9 +119,6 @@ EuroHPC JU LUMI (HPE Cray EX) <br>at CSC (2021–)
 
 - Power consumption of CPU: $~f^3$
 
-![](img/moore.png){.center width=45%}
-
-
 # Performance of supercomputers
 
 <div class=column style=width:59%>
@@ -180,8 +134,8 @@ EuroHPC JU LUMI (HPE Cray EX) <br>at CSC (2021–)
 </div>
 <div class=column style=width:39%>
 <center>
-![](img/top_500.png){.center width=100%}
-Image: [top500.org](https://top500.org/)
+![](https://a3s.fi/summerschool/assets/images/top500_perfdevel_nov25.png){.center width=100%}
+<small>Image: <https://top500.org/statistics/perfdevel/></small>
 </center>
 </div>
 
@@ -189,10 +143,7 @@ Image: [top500.org](https://top500.org/)
 # From laptop to Tier-0
 
 <div class=column>
-
-<!-- Copyright CSC -->
  ![](img/tier.svg){.center width=80%}
-
 </div>
 <div class=column>
 - The most fundamental difference between a small university cluster and Tier-0 supercomputer is the number of nodes
@@ -205,25 +156,46 @@ Image: [top500.org](https://top500.org/)
 # GPUs are becoming the norm
 
 <center>
-![](img/top500_nov21.svg){.center width=65%}
+![](https://a3s.fi/summerschool/assets/images/top500_nov21.svg){.center width=60%}
 
-- Top500 supercomputers grouped by the accelator type (Nov 2021 list)
+Top500 supercomputers grouped by the accelator type (Nov 2021 list)<br>
+<small>Image: <https://top500.org/statistics/treemaps/></small>
 </center>
 
 # GPUs are becoming the norm
 
 <center>
-![](img/top500_nov22.svg){.center width=65%}
+![](https://a3s.fi/summerschool/assets/images/top500_nov22.svg){.center width=60%}
 
-- Top500 supercomputers grouped by the accelator type (Nov 2022 list)
+Top500 supercomputers grouped by the accelator type (Nov 2022 list)<br>
+<small>Image: <https://top500.org/statistics/treemaps/></small>
 </center>
 
 # GPUs are becoming the norm
 
 <center>
-![](img/top500_nov24.svg){.center width=65%}
+![](https://a3s.fi/summerschool/assets/images/top500_nov23.svg){.center width=60%}
 
-- Top500 supercomputers grouped by the accelator type (Nov 2024 list)
+Top500 supercomputers grouped by the accelator type (Nov 2023 list)<br>
+<small>Image: <https://top500.org/statistics/treemaps/></small>
+</center>
+
+# GPUs are becoming the norm
+
+<center>
+![](https://a3s.fi/summerschool/assets/images/top500_nov24.svg){.center width=60%}
+
+Top500 supercomputers grouped by the accelator type (Nov 2024 list)<br>
+<small>Image: <https://top500.org/statistics/treemaps/></small>
+</center>
+
+# GPUs are becoming the norm
+
+<center>
+![](https://a3s.fi/summerschool/assets/images/top500_nov25.svg){.center width=60%}
+
+Top500 supercomputers grouped by the accelator type (Nov 2025 list)<br>
+<small>Image: <https://top500.org/statistics/treemaps/></small>
 </center>
 
 
@@ -250,23 +222,17 @@ Image: [top500.org](https://top500.org/)
 
 # Quantum computing
 
-<div class=column>
 - Solving certain types of problems exponentially faster than classical computers
 - General-purpose quantum computer is still far away
 - Use cases still largely experimental
 - Hybrid approaches combining classical and quantum computing
   - Both are needed
-</div>
-<div class=column>
-![](img/quantum.png){.center width=50%}
-</div>
 
 
 # Summary {.section}
 
 # Utilizing HPC in scientific research
 
-<!-- Copyright CSC -->
 ![](img/sci.svg){.center width=40%}
 
 - **Goal for this school: everyone is able to write and modify HPC applications!**

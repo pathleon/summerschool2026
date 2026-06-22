@@ -20,23 +20,25 @@ lang:   en
 
 <div class=column>
 - A node can have multiple sockets with memory attached to each socket
+   - There can be memory hierarchy also within a socket
 - Non-Uniform Memory Access (NUMA)
   - All memory within a node is accessible, but latencies and bandwidths vary
   - Query configuration with<br>`numactl --hardware`
 </div>
 
 <div class=column>
-![](img/numa-schematic.png){.center width=70%}
+![](img/mahti-schematic.svg){.center width=100%}
 </div>
 
 # First touch policy
 
 - Operating system typically optimizes memory allocations
   - `malloc()` does not allocate the memory directly, but at first memory access (write), the operating system physically allocates the corresponding page (first touch policy)
-- To avoid performance loss: Initializion of data should be done on the thread that will be later using this data
+- To avoid performance loss: Initializion of data should be done on the core that will be later using this data
 
 # NUMA aware initialization
 
+<div class=column>
 - No NUMA awareness
 
 ```c
@@ -49,9 +51,18 @@ for (int i=0; i < N; i++)
 for (int i=0; i < N; i++)
    process(data[i])
 ```
+</div>
+
+<div class=column>
+![](img/first-touch-bad.svg){.center width=100%}
+</div>
+
+- All the data is physically on NUMA domain 0
+- Slow access from cores on other NUMA domains
 
 # NUMA aware initialization
 
+<div class=column>
 - With NUMA awareness
 
 ```c
@@ -65,6 +76,14 @@ for (int i=0; i < N; i++)
 for (int i=0; i < N; i++)
    process(data[i])
 ```
+</div>
+
+<div class=column>
+![](img/first-touch-good.svg){.center width=100%}
+</div>
+
+- Data is distributed to different physical NUMA domains
+- Fast access when cores use local data
 
 # Thread and process affinity
 
@@ -85,7 +104,7 @@ for (int i=0; i < N; i++)
       `numactl --physcpubind=0,3,7 ./my_exe`
       </span>
     - Threads inherit the affinity of their parent process
-- On LUMI, process affinity is set by using SLURM options
+- On LUMI, process affinity can be set by using SLURM options
     - `--distribution={nodes}:{sockets}:{cores}`
         - `{nodes|sockets|cores} ∈ [block, cyclic, plane=<size>, ...]`
     - e.g. `--distribution=block:cyclic:fcyclic`
@@ -168,8 +187,10 @@ Thread 003 affinity 3,7
 
 
 # Summary {.section}
+
 # Summary
 
+- NUMA (non-uniform memory access) aware initialization is important for multithreaded applications
 - Performance of HPC applications is often improved when processes and
   threads are pinned to CPU cores
 - MPI and batch system configurations may affect the affinity

@@ -41,7 +41,6 @@ lang:   en
 # MPI point-to-point operations
 
 - One process *sends* a message to another process that *receives* it with `MPI_Send` and `MPI_Recv` routines
-- Sends and receives in a program should match – one receive per send
 - Each message contains
   - Data
     - A *buffer*, the *datatype* of the data elements, and the *number* of the data elements
@@ -49,6 +48,8 @@ lang:   en
     - The ranks of the *source* and *destination* processes
     - An identification number for the message (*tag*)
     - Used *communicator*
+- Sends and receives in a program should match – one receive per send
+    - Matching is based on source, destination and tags
 
 # MPI point-to-point operations
 
@@ -93,7 +94,7 @@ MPI_Recv(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input
 
 - Array in C is a pointer to the first element
   ```c
-  int *arr = (int*)malloc(4 * sizeof(int));
+  int *arr = (int*) malloc(4 * sizeof(int));
 
   arr[0] = 10;  // set first element
   *arr = 10;  // equivalent to line above
@@ -169,7 +170,7 @@ MPI_Recv(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input
 - Demo: `parallel_sum.c`
 </div>
 <div class=column>
-- Array initially on process #0 (P0)
+- Array initially on process P0
 - Parallel algorithm:
     1. **Scatter**:
     P0 sends half of the array to process P1
@@ -257,5 +258,6 @@ MPI_Recv(`buffer`{.output}, `count`{.input}, `datatype`{.input}, `source`{.input
 - Point-to-point communication = messages are sent between two MPI processes
 - Point-to-point operations enable any parallel communication pattern
   - `MPI_Send` and `MPI_Recv` would be (in principle) enough
+- Sends and receives must match
 - `MPI_Send` and `MPI_Recv` are blocking routines
   - Beware of deadlocks

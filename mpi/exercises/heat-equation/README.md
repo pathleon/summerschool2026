@@ -6,20 +6,25 @@ SPDX-License-Identifier: CC-BY-4.0
 
 ## Heat equation solver in parallel with MPI
 
-Parallelise our implementation of a two-dimensional heat equation solver using
-MPI. See [Code description](code-description.md) for some theory and more
-details about the code.
+The goal in this set of exercises is to parallelize an existing simulation
+code using various MPI approaches. The code is a two-dimensional heat equation
+solver that evolves the temperature field using local updates: the updated
+temperature at a given point is computed based solely on previous field values
+at that point and its neighbor points ("stencil").
+See [Code description](code-description.md) for some theory and details about
+the code.
 
-To parallelise the code, one needs to divide the grid into blocks of columns
-(in Fortran) or rows (in C/C++) and assign each block to one MPI task. Or in other
-words, share the work among the MPI tasks by doing a domain decomposition.
+To parallelize the code, one needs to divide the grid into blocks of rows
+(in C/C++) or columns (in Fortran) and assign each block to one MPI task. In
+other words, the program should share the work among the MPI tasks by doing a
+domain decomposition.
 
 The MPI tasks are able to update the grid independently everywhere else than
-on the boundaries -- there the communication of a single column (or row) with
-the nearest neighbour is needed. This can be achieved by having additional
-ghost-layers that contain the boundary data of the neighbouring tasks. As the
-system is aperiodic, the outermost ranks communicate with only one neighbour,
-and the inner ranks with two neighbours.
+on the boundaries -- there the communication of a single row (C/C++) or column
+(Fortran) with the nearest neighbour is needed. This can be achieved by having additional
+ghost-layers that contain the boundary data of the neighbouring tasks. We
+assume the system to be non-periodic, so the outermost ranks communicate with
+only one neighbour and the inner ranks with two neighbours.
 
 ![domain decomposition C](img/domain-decomposition-c.svg)
 
@@ -32,30 +37,37 @@ and the inner ranks with two neighbours.
 2. [Using sendrecv](#using-sendrecv)
 3. [Using non-blocking communication](#using-non-blocking-communication)
 4. [Using collective communication](#using-collective-communication)
-5. [Using Cartesian communicator](#using-cartesian-communicator)
-6. [2D decomposition](#2d-decomposition)
+5. [Bonus: Using Cartesian communicator](#using-cartesian-communicator)
+6. [Bonus: 2D decomposition](#2d-decomposition)
 
 
 ### First steps
 
-Some parts of the code are already parallelized (*e.g.* input/output), complete
-the parallelization as follows (marked with TODOs in the source code):
+Some parts of the code already work with MPI parallelization (*e.g.* input/output).
+Your task is to complete the parallelization following the TODO comments in
+the source code:
 
 1. Initialize and finalize MPI in the main routine
    - in [cpp/main.cpp](cpp/main.cpp) or
    - in [fortran/main.F90](fortran/main.F90)
-2. Determine the number of MPI processes, rank, as well as the left (or up) and right (or down) neighbours of a domain
+2. Determine the number of MPI processes, rank, as well as the up (or left) and down (or right) neighbours of a domain
    - in the `ParallelData()` constructor in [cpp/heat.hpp](cpp/heat.hpp) or
    - in the routine `parallel_setup()` in [fortran/heat_mod.F90](fortran/heat_mod.F90)
 3. Use `MPI_Send` and `MPI_Recv` for implementing the "halo exchange" operation in the `exchange()` routine
    - in [cpp/core.cpp](cpp/core.cpp) or
    - in [fortran/core.F90](fortran/core.F90)
 
-To build the code, please use the provided `Makefile` (by typing `make`).
+There is a working serial code under [cpp/serial](cpp/serial) / [fortran/serial](fortran/serial)
+which you can use as a reference.
 
-There is also working serial code under [cpp/serial](cpp/serial) / [fortran/serial](fortran/serial)
-which you can use as reference.
+To build the code, please use the provided `Makefile`.
+Use the `PLATFORM` variable if building on systems other than LUMI.
+`make PLATFORM=generic` should work on any Unix-like system.
 
+The same `Makefile` can also build our model solutions using the optional
+`SOLUTION` variable. Examples:
+- Under the [`cpp`](cpp/) or [`Fortran`](fortran/) directories: `make SOLUTION=solution-send-recv`
+- Build the serial implementation for C++ or Fortran: `make SOLUTION=serial`
 
 ### Using sendrecv
 
@@ -96,7 +108,7 @@ Implement collective communication in the code.
    - in [cpp/utilities.cpp](cpp/utilities.cpp) or
    - in [fortran/utilities.F90](fortran/utilities.F90)
 2. Replace the individual sends and receives in the routine `read_field` with appropriate collective communication
-   (note that the code needs to be run with the initial data read from an input file found under the [common](common) directory: `srun ./heat_mpi bottle.dat`)
+   (note that the code needs to be run with the initial data read from an input file found under the [heat-shared/data](../../../heat-shared/data) directory: `srun ./heat_mpi ../../../heat-shared/data/bottle.dat`)
    - in [cpp/io.cpp](cpp/io.cpp) or
    - in [fortran/io.F90](fortran/io.F90)
 3. Is it possible to use collective communications also in the routine `write_field`?
@@ -105,6 +117,10 @@ Implement collective communication in the code.
 
 
 ### Using Cartesian communicator
+
+**Note!** This section depends on bonus material that we do not cover in the lectures.
+You may find our extra slides on process topologies
+[here](https://csc-training.github.io/summerschool/main/html/mpi/zz-process-topologies.html).
 
 Before starting with this exercise, you need to have a working parallel code from the previous exercises.
 You can also use its model solution as starting point.

@@ -368,19 +368,17 @@ GPU threads
 
 - Very lightweight: cheap to switch
 - $N_{thr} = O(N_{data}) \approx 10^4 - 10^6$
-- Spawned automatically during kernel launch
-- Threads grouped hiearchically
-- Mapped to lanes of a SIMD unit
+- Lifetime tied to the running kernel
+- Alway some inherent hierarchy between threads, user configurable
 
 :::
 ::: {.column width="50%"}
 CPU threads
 
-- Context switch a heavy operation
+- Expensive to switch
 - $N_{thr} = O(N_{core}) \approx 10^1 - 10^2$
-- Spawned by the user/library
-- Threads can work independently
-- Mapped to cores
+- Lifetime controlled by the user/library
+- No inherent hierarchy, entirely up to the user/library
 :::
 ::::::
 
@@ -391,7 +389,7 @@ CPU threads
 GPU
 
 - Launch many threads to oversubscribe hardware
-- In case of a stall, context switch to another thread to keep working
+- In case of a stall, switch to another thread to keep working
 
 :::
 ::: {.column width="50%"}
@@ -402,7 +400,7 @@ CPU
   - branch prediction
   - instruction reordering
   - large and sophisticated caches
-- As the last resort, context switch to another thread
+- As the last resort, switch to another thread
 
 :::
 ::::::

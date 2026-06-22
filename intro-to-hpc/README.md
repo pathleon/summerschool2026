@@ -1,19 +1,32 @@
-# Getting started with high-performance computing
+<!--
+SPDX-FileCopyrightText: 2010 CSC - IT Center for Science Ltd. <www.csc.fi>
 
-Before starting the exercises, create a personal working directory and clone the git repository there
+SPDX-License-Identifier: CC-BY-4.0
+-->
 
-    mkdir -p /scratch/project_462000956/$USER
-    cd /scratch/project_462000956/$USER
-    git clone https://github.com/csc-training/summerschool.git /scratch/project_462000956/$USER/summerschool
+# Introduction to HPC module
 
-Once you have done this, the files remain on LUMI and in the subsequent terminal sessions you can go
-directly to your summershool clone:
+## Learning outcomes
 
-    cd /scratch/project_462000956/$USER/summerschool
+After completing the module, participants should be able to:
+- Explain the meaning and utility of high‑performance computing (HPC)
+- Describe the components of a modern supercomputer
+- Explain key principles and challenges of parallel computing
+- Conduct and interpret a scaling study on an HPC system
+- Use a supercomputing environment effectively
 
-See the [exercise instructions](../exercise-instructions.md) for general instructions.
+## Presentation slides
+
+Presentation slides are available [here](https://csc-training.github.io/summerschool/?open=intro-to-hpc).
+
+## Demos
+
+See [demos directory](demos/) for the demo codes referred to in the slides.
 
 ## Exercises
 
-- [Building and running](building-running)
-- [Scalability analysis](scalability)
+See [exercises directory](exercises/) for exercises.
+
+## Web resources
+
+- General instructions for using, compiling, and running jobs: [LUMI](../README_LUMI.md) and [Mahti](../README_Mahti.md)
