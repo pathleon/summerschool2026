@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2010 CSC - IT Center for Science Ltd. <www.csc.fi>
+
+SPDX-License-Identifier: CC-BY-4.0
+-->
+
 # Working with supercomputers
 
 1. My previous experience in using Linux
