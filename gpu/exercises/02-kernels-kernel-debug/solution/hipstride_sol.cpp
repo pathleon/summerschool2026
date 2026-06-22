@@ -3,10 +3,11 @@
 // SPDX-License-Identifier: MIT
 
 #include <hip/hip_runtime.h>
+#include <stdio.h>
 #include <iostream>
 #include <vector>
 #include <iomanip>
-#include "./error_checking.hpp"
+#include "../../error_checking.hpp"
 
 const int WIDTH  = 16;
 const int HEIGHT = 8;   // Intentionally different from WIDTH

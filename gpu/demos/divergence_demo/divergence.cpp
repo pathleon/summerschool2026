@@ -54,6 +54,27 @@ __global__ void no_divergence_kernel(double* x, int n)
         }
     }
 }
+
+__global__ void singlebranch_kernel(double* x, int n)
+{
+    int tid = blockIdx.x * blockDim.x + threadIdx.x;
+    if (tid < n) {
+            x[tid] = f2((double)tid);
+    }
+}
+
+__global__ void ternary_kernel(double* x, int n)
+{
+    int tid = blockIdx.x * blockDim.x + threadIdx.x;
+    if (tid < n) {
+        bool mask = (tid%2) == 0;
+            x[tid] =   mask * f1((double)tid);
+            x[tid] += (!mask) * f2((double)tid);
+        }
+
+}
+
+
 int main()
 {
     double* d_x;
@@ -68,6 +89,11 @@ int main()
     no_divergence_kernel<<<grid, block>>>(d_x, N);
     hipDeviceSynchronize();
 
+    singlebranch_kernel<<<grid, block>>>(d_x, N);
+    hipDeviceSynchronize();
+
+    ternary_kernel<<<grid, block>>>(d_x, N);
+    hipDeviceSynchronize();
 
     hipFree(d_x);
     std::cout << "Kernel completed.\n";

@@ -5,6 +5,7 @@
 #include "heat.hpp"
 #include "matrix.hpp"
 #include <iostream>
+#include <stdio.h>
 #include <mpi.h>
 #include <omp.h>
 

@@ -3,13 +3,13 @@
 // SPDX-License-Identifier: MIT
 
 #include <hip/hip_runtime.h>
+#include <assert.h>
+#include <stdio.h>
 
 __global__ void hello(int32_t num_blocks, int32_t num_threads) {
     assert(num_blocks != 10);
-
-    printf("Hello world, this is kernel speaking!\n %d * %d = %d threads are "
-           "printing this message\n",
-           num_blocks, num_threads, num_blocks * num_threads);
+    const auto tid = threadIdx.x + blockIdx.x * blockDim.x;
+    printf("Hello world, this is kernel speaking! Thread %d[block %d, thread %d] out of %d is printing this message\n", tid,blockIdx.x,threadIdx.x, num_blocks * num_threads);
 }
 
 int main(int argc, char **argv) {
@@ -22,10 +22,10 @@ int main(int argc, char **argv) {
     const int32_t num_blocks = std::atoi(argv[1]);
     const int32_t num_threads = std::atoi(argv[2]);
 
-    printf("Launching with %d blocks and %d threads\n", num_blocks,
-           num_threads);
+    printf("Launching with %d blocks and %d threads\n", num_blocks, num_threads);
     hello<<<num_blocks, num_threads>>>(num_blocks, num_threads);
     [[maybe_unused]] const auto result = hipDeviceSynchronize();
 
     return 0;
 }
+

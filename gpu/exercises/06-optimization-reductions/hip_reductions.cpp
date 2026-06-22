@@ -3,6 +3,7 @@
 // SPDX-License-Identifier: MIT
 
 #include <hip/hip_runtime.h>
+#include <stdio.h>
 #include <hipcub/hipcub.hpp>
 #include <iostream>
 #include <vector>
@@ -157,7 +158,7 @@ double run_kernel(const double* d_in, size_t N,
 int main(int argc, char** argv)
 {
     size_t N = 1ull << 24;
-    Mode mode = M_OPTIMIZED;
+    Mode mode = M_NAIVE;
     int threads = 256;
     int blocks  = 0;      // 0 = auto
     int repeat  = 1;
@@ -208,10 +209,9 @@ int main(int argc, char** argv)
     std::cout << "Device: " << prop.name << " (MPs=" << mp << ")\n";
     std::cout << "Mode=" << mode_name(mode)
               << " N=" << N
-              << " blocks=" << (mode==M_MULTIWAVE?1:blocks)
+              << " blocks=" << blocks
               << " threads=" << threads
               << " repeat=" << repeat
-              << (HAS_NT_LOAD && mode==M_NONTEMPORAL ? " [nontemporal=ON]" : "")
               << "\n";
 
     // Host data

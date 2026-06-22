@@ -3,6 +3,7 @@
 // SPDX-License-Identifier: MIT
 
 #include <hip/hip_runtime.h>
+#include <stdio.h>
 
 // TODO 1: Go to this file and fill in the blanks there
 #include "error_checking.hpp"

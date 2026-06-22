@@ -5,6 +5,7 @@
 #pragma once
 
 #include <hip/hip_runtime.h>
+#include <stdio.h>
 
 #define LAUNCH_KERNEL(kernel, ...) launch_kernel(#kernel, __FILE__, __LINE__, kernel, __VA_ARGS__)
 

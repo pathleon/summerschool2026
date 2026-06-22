@@ -16,7 +16,7 @@ Let's get started!
 
 The first exercise teaches you how to compile HIP code.
 
-Compile and run a simple HIP test program provided as `hello.cpp`.
+Compile and run a simple HIP test program provided as `main.cpp`.
 Once you've successfully compiled and run the code, you can select the second exercise
 
 Please follow the system-specific instructions provided in the

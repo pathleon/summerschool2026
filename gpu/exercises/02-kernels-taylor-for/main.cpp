@@ -5,6 +5,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <hip/hip_runtime.h>
+#include <chrono>
 
 // This file include macros for checking the API and kernel launch errors
 #include "../error_checking.hpp"

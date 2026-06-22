@@ -8,6 +8,31 @@ event:  CSC Summer School in High-Performance Computing 2026
 lang:   en
 ---
 
+# Overview
+
+We will cover the following topics
+  \
+  \
+
+- CUDA/HIP terminology
+- Some APIs and keywords
+- Thread hierarchy
+- (Basic) Memory management
+- Error checking
+
+
+# Learning Objectives
+
+After this lecture you will understand
+  \
+  \
+  
+- GPU terminology (e.g. what is a thread, a kernel,...)
+- Clarifying GPU programming model 
+
+But most important, you will be able to launch kernels!
+
+
 # CUDA
 
 ::: incremental
@@ -189,15 +214,9 @@ __global__ void axpy(int n, double a, double *x, double *y)
 # Launching kernels
 
 ::: incremental
-- kernels are launched with one of the two following options:
-  - CUDA syntax (recommended, because it works both on CUDA and HIP):
+- kernels are launched with the following syntax:
   ```cpp
   axpy<<<blocks, threads, shmem, stream>>>(args)
-  ```
-  
-  - HIP syntax:
-  ```cpp
-  hipLaunchKernelGGL(axpy, blocks, threads, shmem, stream, args)
   ```
 
 - grid dimensions are obligatory
@@ -317,45 +336,6 @@ void launch_kernel(const char *kernel_name, const char *file, int32_t line,
                hipGetErrorString(result));
         exit(EXIT_FAILURE);
     }
-}
-```
-
-# Example: fill (complete device code and launch)
-
-```cpp
-#include <hip/hip_runtime.h>
-#include <stdio.h>
-#include <vector>
-#include <error_checking.hpp>
-
-__global__ void fill(int n, double a, double *x) {
-    const int tid = threadIdx.x + blockIdx.x * blockDim.x;
-    const int stride = gridDim.x * blockDim.x;
-
-    for (int i = tid; i < n; i += stride)
-        x[i] = a;
-}
-```
-
-# Example: fill (complete device code and launch)
-
-```cpp
-int main() {
-    static constexpr size_t n = 10000;
-    static constexpr size_t num_bytes = n * sizeof(double);
-    static constexpr double a = 3.4;
-
-    double *d_x = nullptr;
-    HIP_ERRCHK(hipMalloc(&d_x, num_bytes));
-
-    const int threads = 256;
-    const int blocks = 32;
-    LAUNCH_KERNEL(fill, blocks, threads, 0, 0, n, a, d_x));
-
-    std::vector<double> x(n);
-    HIP_ERRCHK(hipMemcpy(x.data(), d_x, num_bytes, hipMemcpyDefault));
-
-    printf("%f %f %f %f ... %f %f\n", x[0], x[1], x[2], x[3], x[n-2], x[n-1]);
 }
 ```
 

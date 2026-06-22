@@ -20,7 +20,7 @@ If you go for this second approach, remember that threads are executed in parall
 For this reason it is useful to add some "identifiers" to all the prints done, so that you can know which thread is printing what.
 For example you can use: 
 `printf("Block is (%d,%d,%d) thread is (%d,%d,%d): MESSAGE\n",blockIdx.x,blockIdx.y,blockIdx.z,threadIdx.x,threadIdx.y,threadIdx.z)`
-Another useful piece of information is that prints on GPU are buffered and only appear in the stdout/err AFTER the end of the kernel. so if you trigger a segfault, you will not see any prints. A trick I used in the past is to find the instruction that triggers the segfault and comment the kernel from there on to get the prints and analyze them.
+Another useful piece of information is that prints on GPU are buffered. If you trigger a segfault (which is undefined behavior), you may not see any prints, or only part of them. It may help identifying and removing the segfaulting instruction to print indices and other information in a "not undefined" way.
 Finally, the buffer has a limited space. So keep the prints "small" and delete them as long as you proceed with the debugging. And be sure to remove them for the releases!
 
 In this exercise we will fix a mistake in our kernel.

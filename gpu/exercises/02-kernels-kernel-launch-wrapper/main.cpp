@@ -3,6 +3,8 @@
 // SPDX-License-Identifier: MIT
 
 #include <hip/hip_runtime.h>
+#include <stdio.h>
+#include <assert.h>
 
 // This file contains the kernel launch macro
 #include "../error_checking.hpp"
