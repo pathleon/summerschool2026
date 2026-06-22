@@ -56,14 +56,19 @@ to the file `$HOME/.bashrc`.
 
 </details>
 
-## Editors
+## Editing code
 
-For editing program source files you can use e.g. the *nano* editor:
-
+You can use terminal-based code editors for modifying source code directly on LUMI, e.g. when working on exercises.
+For instance, using `nano`:
     nano prog.F90
 
 (`^` in nano's shortcuts refer to **Ctrl** key, *i.e.* in order to save the file and exit the editor press `Ctrl+X`)
-Also other popular editors such as *emacs* and *vim* are available.
+Other available editors include *emacs* and *vim*.
+
+Another valid approach is to do all your code editing locally on your own laptop and clone the changes to LUMI for
+compilation and running. We provide a utility script, based on `rsync`, for simplifying this process:
+- [The script itself](tools/rsync_to_hpc.sh)
+- [Usage and documentation](tools/README.md)
 
 
 ## Web interface

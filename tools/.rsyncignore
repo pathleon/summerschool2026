@@ -1,0 +1,20 @@
+# SPDX-FileCopyrightText: 2026 CSC - IT Center for Science Ltd. <www.csc.fi>
+#
+# SPDX-License-Identifier: MIT
+
+# Files and patterns listed here will be excluded by the summerschool rsync script
+
+# Repo boilerplate
+.gitignore
+.git/
+.github/
+COPYING
+LICENSES
+about.yml
+*.license
+
+# Images
+*.png
+*.svg
+*.jpg
+*.pdf
