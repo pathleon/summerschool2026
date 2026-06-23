@@ -153,6 +153,10 @@ Xlinker="-Xlinker $(mpicxx --showme | tr ' ' '\n' | sed -n 's/^-Wl,//p' | paste 
 nvcc -O3 -gencode arch=compute_80,code=sm_80 $Xcompiler $Xlinker prog.cu -o prog.x
 ```
 
+As the exercises were prepared for LUMI using hip, to run on Mahti you need either to manually convert all cuda API calls from hip to cuda, or to use the HOP library (https://github.com/cschpc/hop) to automatically do so during the compilation.
+If you opt for this second option, please do read the HOP README as it contains all necessary information to proceed.
+
+
 ### OpenMP offload and MPI+OpenMP offload
 
 For GPU programming with OpenMP offload use:
@@ -186,7 +190,6 @@ mpicc -mp=gpu -O3 -gpu=cc80 prog.c -o prog.x
 mpicxx -mp=gpu -O3 -gpu=cc80 prog.cpp -o prog.x
 mpif90 -mp=gpu -O3 -gpu=cc80 prog.F90 -o prog.x
 ```
-
 
 ## Running
 
