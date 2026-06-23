@@ -34,7 +34,7 @@ lang:   en
   - Life sciences and medicine
   - Renewable energy and fusion research
   - Engineering
-  - [Large-scale AI](https://lumi-supercomputer.eu/scaling-the-pre-training-of-large-language-models-of-100b-parameters-to-thousands-of-amd-mi250x-gpus-on-lumi/)
+  - Large-scale AI
   - ...
 
 # What are supercomputers? {.section}
