@@ -163,6 +163,8 @@ MPI_Scatterv(`sendbuf`{.input}, `sendcounts`{.input}, `displs`{.input}, `sendtyp
 
 <p>
 - Data is scattered in portions given by `sendcounts` and `displs`
+- **Note!** `recvcount` is the number of elements received by the calling rank. It should be consistent with the associated value in `sendcounts` of the root process
+
 
 # Scattering data, example with data
 
@@ -231,6 +233,7 @@ MPI_Gatherv(`sendbuf`{.input}, `sendcount`{.input}, `sendtype`{.input}, `recvbuf
 
 <p>
 - Data is gathered in portions given by `recvcounts` and `displs`
+- **Note!** `sendcount` is the number of elements sent by the calling rank. It should be consistent with the associated value in `recvcounts` of the root process
 
 # Gathering data, vector example
 
