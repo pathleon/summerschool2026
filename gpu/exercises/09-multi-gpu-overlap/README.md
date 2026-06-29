@@ -6,8 +6,6 @@ SPDX-License-Identifier: CC-BY-4.0
 
 # Overlapping communication and computation
 
-Note: this exercise assumes a knowledge about basic MPI programming
-
 In this exercise you can investigate how to hide communication costs
 by overlapping communication with computation. As computations are done
 in GPU asynchronously to the host CPU, CPU can participate in the message
