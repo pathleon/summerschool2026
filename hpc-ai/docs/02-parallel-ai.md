@@ -1,19 +1,22 @@
 ---
+# SPDX-FileCopyrightText: 2026 Hossein Firooz (Aalto University) and CSC - IT Center for Science Ltd. <www.csc.fi>
+#
+# SPDX-License-Identifier: CC-BY-4.0
+
 title:  "Scaling PyTorch Models: Single vs Multi-GPU Training and Techniques"
-event:  CSC Summer School in High-Performance Computing 2025
-author: Hossein Firooz (FCAI / Aalto University)
+event:  CSC Summer School in High-Performance Computing 2026
 lang:   en
 ---
 
 # Single GPU vs Multi-GPU training
-- Training ML models could be intense
-  - Heavy computations
-  - Large Model
+- Training ML models computationally intensive
+  - Huge datasets &rarr; takes a long time 
+  - Large models &rarr; might not fit into memory of one GPU
 - That's why we might need use multiple GPUs to train
-  - GPUs could be accross multiple nodes
+  - GPUs could be across multiple nodes
 - Multi-GPU or Multi-Node training has overhead
   - Communication costs
-  - Distributation of the data
+  - Distribution of the data
   - Underutilization
 
 
@@ -31,7 +34,7 @@ lang:   en
 ![](img/single_gpu.png){.center width=30%}
 :::
 ::: {.column width="50%"}
-- Entire model & data on one GPU
+- Entire model & batch data on one GPU
 - Pros: Simple, fast for small models
 - Cons: Not scalable to large models/dataset
 :::
@@ -40,10 +43,10 @@ lang:   en
 
 # DataLoader Issue
 
-- Most common bottleneck in workflows  
-- Causes the underutilization issue  
-- Reserve enough CPU cores per GPU (7 cores/GPU on LUMI)  
-- Use multiple workers (processes) in PyTorch `DataLoader`  
+- Common bottleneck in workflows
+- Causes underutilization
+- Reserve enough CPU cores per GPU (7 cores/GPU on LUMI)
+- Use multiple workers (processes) in PyTorch `DataLoader`
 
 ```python
 train_loader = torch.utils.data.DataLoader(data, ..., num_workers=N)
@@ -56,12 +59,12 @@ train_loader = torch.utils.data.DataLoader(data, ..., num_workers=N)
 
 :::::: {.columns}
 ::: {.column width="50%"}
-**Model Parallelism**
-![](img/model_parallelism_general.png){.center width=45%}
-:::
-::: {.column width="50%"}
 **Data Parallelism**
 ![](img/data_parallelism_general.png){.center width=70%}
+:::
+::: {.column width="50%"}
+**Model Parallelism**
+![](img/model_parallelism_general.png){.center width=45%}
 :::
 ::::::
 
@@ -99,11 +102,11 @@ train_loader = torch.utils.data.DataLoader(data, ..., num_workers=N)
   ![](img/pytorch_ddp_details.png){width=75%}
 
 
-# DDP AllReduce overlap
-Without overlap:
-  ![](img/ddp_non_interleaved.png){.center width=60%}
-With overlap: 
-  ![](img/ddp_overlap.png){.center width=60%}
+<!-- # DDP AllReduce overlap -->
+<!-- Without overlap: -->
+<!--   ![](img/ddp_non_interleaved.png){.center width=60%} -->
+<!-- With overlap:  -->
+<!--   ![](img/ddp_overlap.png){.center width=60%} -->
 
 
 # DDP vs DP
@@ -179,7 +182,7 @@ With overlap:
 
 
 
-# How MP works?
+# How Tensor Parallelism works?
 
 ![](img/tp_example.png){width=60%}
 

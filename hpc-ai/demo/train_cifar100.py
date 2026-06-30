@@ -7,13 +7,15 @@ from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
 import torch.profiler
 import time
+import os
+
 
 # TODO: change the model to resnet50 and investigate the performance
 def get_model():
     return torchvision.models.resnet152(num_classes=100)
 
 def train():
-    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     transform = transforms.Compose([
         transforms.Resize((224, 224)),
@@ -21,8 +23,9 @@ def train():
         transforms.Normalize((0.5071, 0.4865, 0.4409), (0.2673, 0.2564, 0.2762))
     ])
 
+    csc_project = os.getenv('SLURM_JOB_ACCOUNT')
     trainset = torchvision.datasets.CIFAR100(
-        root='/scratch/project_462000956/data',
+        root=f'/scratch/{csc_project}/data',
         train=True,
         download=True,
         transform=transform

@@ -1,6 +1,10 @@
 ---
+# SPDX-FileCopyrightText: 2026 Hossein Firooz (Aalto University) and CSC - IT Center for Science Ltd. <www.csc.fi>
+#
+# SPDX-License-Identifier: CC-BY-4.0
+
 title:  Introduction to AI
-event:  CSC Summer School in High-Performance Computing 2025
+event:  CSC Summer School in High-Performance Computing 2026
 lang:   en
 ---
 
@@ -9,7 +13,7 @@ lang:   en
 <div class="column"  style="width:99%; text-align: center;">
   ![](img/AI_ML_DL_differences.png){width=41%}
   
-  <small>From [Introduction to Deep Learning](AI_ML_DL_differences.png) ENCCS training, [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)</small>
+  <small>From [Introduction to Deep Learning](https://enccs.github.io/deep-learning-intro/) ENCCS training, [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)</small>
 </div>
 
 # Machine Learning
@@ -34,7 +38,7 @@ lang:   en
 <div class="column"  style="width:99%; text-align: center;">
   ![](img/Under_Over_fitting.png){width=64%}
 
-  <small>From Wikimedia Commons, [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)</small>
+  <small>Adapted from [Wikimedia Commons](https://en.wikipedia.org/wiki/Overfitting), [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)</small>
 </div>
 
 # Artificial Neurons
@@ -70,7 +74,7 @@ lang:   en
   - a prediction is comprised of a sequence of vector-matrix multiplications, each followed by an activation function call
 
     
-# Forward Pass. Pytorch Example
+# Forward Pass. PyTorch Example
  
 <div class="column"  style="width:75%">
 ```python
@@ -103,44 +107,47 @@ $y_l(\mathbf{z})=\frac{e^{z_l}}{\Sigma_k e^{z_k}}$
 - choose $w_{ijl}$ that minimize the **loss function**, i.e.
 $\frac{\partial E} {\partial w_{ijl} }=0$
 - **training** is an iterative **gradient descent** process: $\frac{\partial w_{ijl}}{\partial t}=- \frac{\partial E}{\partial w_{ijl}}$
-  -  training is done using labelled/known data (&#x1F91E; the model works for new data)
+  - **backpropagation**
+    - weight updates for last layer from gradient of loss
+    - going backwards: weight updates for earlier layers via chain rule
+  - training is done using labelled/known data (&#x1F91E; the model works for new data)
   
 **Not guaranteed to find the true minima!**
 
-# Derivatives for One Layer 
+<!-- # Derivatives for One Layer  -->
 
-- forward pass:
-     - $\varphi_{oj}=f_{1}( \Sigma_{j1}); \Sigma_{j1}= w_{0j1}+ x_1 \cdot w_{1j1}+ x_2 \cdot w_{2j1}+ x_2 \cdot w_{2j1}+ x_3 \cdot w_{3j1}+...$
-- apply the chain rule:
-     - $\frac{\partial E}{\partial w_{ij1}}=\frac{\partial E}{\partial \varphi_{oj}}\frac{\partial \varphi_{oj}}{\partial w_{ij1}}$
-     - $\frac{\partial E}{\partial \varphi_{oj}}=-\Sigma_{k}( T_k-\varphi_{ok})$; $\frac{\partial \varphi_{oj}}{\partial w_{ij1}}=\frac{\partial f_1(\Sigma_{j1})}{\partial \Sigma_{j1}}\frac{\partial \Sigma_{j1}}{\partial w_{ij1}}$
-     - $\frac{\partial \Sigma_{j1}}{\partial w_{0j1}}=1$ or $\frac{\partial \Sigma_{j1}}{\partial w_{ij1}}=x_i; i\neq 0$
-- final result:
-     - $\frac{\partial w_{0j1}}{\partial t}=[\Sigma_{k}( T_k-\varphi_{ok})]\frac{\partial f_1(\Sigma_{j1})}{\partial \Sigma_{j1}}\cdot 1$
-     - $\frac{\partial w_{ij1}}{\partial t}=[\Sigma_{k}( T_k-\varphi_{ok})]\frac{\partial f_1(\Sigma_{j1})}{\partial \Sigma_{j1}}\cdot x_i$; $i\neq 0$
+<!-- - forward pass: -->
+<!--      - $\varphi_{oj}=f_{1}( \Sigma_{j1}); \Sigma_{j1}= w_{0j1}+ x_1 \cdot w_{1j1}+ x_2 \cdot w_{2j1}+ x_2 \cdot w_{2j1}+ x_3 \cdot w_{3j1}+...$ -->
+<!-- - apply the chain rule: -->
+<!--      - $\frac{\partial E}{\partial w_{ij1}}=\frac{\partial E}{\partial \varphi_{oj}}\frac{\partial \varphi_{oj}}{\partial w_{ij1}}$ -->
+<!--      - $\frac{\partial E}{\partial \varphi_{oj}}=-\Sigma_{k}( T_k-\varphi_{ok})$; $\frac{\partial \varphi_{oj}}{\partial w_{ij1}}=\frac{\partial f_1(\Sigma_{j1})}{\partial \Sigma_{j1}}\frac{\partial \Sigma_{j1}}{\partial w_{ij1}}$ -->
+<!--      - $\frac{\partial \Sigma_{j1}}{\partial w_{0j1}}=1$ or $\frac{\partial \Sigma_{j1}}{\partial w_{ij1}}=x_i; i\neq 0$ -->
+<!-- - final result: -->
+<!--      - $\frac{\partial w_{0j1}}{\partial t}=[\Sigma_{k}( T_k-\varphi_{ok})]\frac{\partial f_1(\Sigma_{j1})}{\partial \Sigma_{j1}}\cdot 1$ -->
+<!--      - $\frac{\partial w_{ij1}}{\partial t}=[\Sigma_{k}( T_k-\varphi_{ok})]\frac{\partial f_1(\Sigma_{j1})}{\partial \Sigma_{j1}}\cdot x_i$; $i\neq 0$ -->
 
 
-# Derivatives for Two Layers. Weights in the Second Layer
+<!-- # Derivatives for Two Layers. Weights in the Second Layer -->
 
-- forward pass: 
-     - 1: $\varphi_{j1}=f_{1}( \Sigma_{j1}); \Sigma_{j1}= w_{0j1}+ x_1 \cdot w_{1j1}+ x_2 \cdot w_{2j1}+ x_{31} \cdot w_{3j1}+...$
-     - 2: $\varphi_{oj}=f_{2}( \Sigma_{j2}); \Sigma_{j2}= w_{0j2}+\varphi_{11} \cdot w_{1j2}+\varphi_{21} \cdot w_{2j2}+\varphi_{31} \cdot w_{3j2}+...$
-- apply the chain rule:
-     - $\frac{\partial \Sigma_{j2}}{\partial w_{0j2}}=1$ or $\frac{\partial \Sigma_{j2}}{\partial w_{ij2}}=\varphi_{i1}; i\neq 0$
-- final result:
-     - $\frac{\partial w_{0j2}}{\partial t}=[\Sigma_{k}( T_k-\varphi_{ok})]\frac{\partial f_2( \Sigma_{j2})}{\partial \Sigma_{j2}}\cdot 1$
-     - $\frac{\partial w_{ij2}}{\partial t}=[\Sigma_{k}( T_k-\varphi_{ok})]\frac{\partial f_2( \Sigma_{j2})}{\partial \Sigma_{j2}}\cdot \varphi_{i1}$; $i\neq 0$
+<!-- - forward pass:  -->
+<!--      - 1: $\varphi_{j1}=f_{1}( \Sigma_{j1}); \Sigma_{j1}= w_{0j1}+ x_1 \cdot w_{1j1}+ x_2 \cdot w_{2j1}+ x_{31} \cdot w_{3j1}+...$ -->
+<!--      - 2: $\varphi_{oj}=f_{2}( \Sigma_{j2}); \Sigma_{j2}= w_{0j2}+\varphi_{11} \cdot w_{1j2}+\varphi_{21} \cdot w_{2j2}+\varphi_{31} \cdot w_{3j2}+...$ -->
+<!-- - apply the chain rule: -->
+<!--      - $\frac{\partial \Sigma_{j2}}{\partial w_{0j2}}=1$ or $\frac{\partial \Sigma_{j2}}{\partial w_{ij2}}=\varphi_{i1}; i\neq 0$ -->
+<!-- - final result: -->
+<!--      - $\frac{\partial w_{0j2}}{\partial t}=[\Sigma_{k}( T_k-\varphi_{ok})]\frac{\partial f_2( \Sigma_{j2})}{\partial \Sigma_{j2}}\cdot 1$ -->
+<!--      - $\frac{\partial w_{ij2}}{\partial t}=[\Sigma_{k}( T_k-\varphi_{ok})]\frac{\partial f_2( \Sigma_{j2})}{\partial \Sigma_{j2}}\cdot \varphi_{i1}$; $i\neq 0$ -->
        
 
-# Derivatives for Two Layers. Weights in the First Layer
+<!-- # Derivatives for Two Layers. Weights in the First Layer -->
 
 
-- continue the chain rule from the previous result:
-     - $\frac{\partial w_{ij1}}{\partial t}=[\Sigma_{k}( T_k-\varphi_{ok})][\frac{\partial f_2( \Sigma_{j2})}{\partial \Sigma_{12}} \cdot \frac{\partial \Sigma_{12}}{\partial w_{ij1}}+\frac{\partial f_2( \Sigma_{22})}{\partial \Sigma_{22}} \cdot \frac{\partial \Sigma_{22}}{\partial w_{ij1}}+\frac{\partial f_2( \Sigma_{32})}{\partial \Sigma_{32}} \cdot \frac{\partial \Sigma_{32}}{\partial w_{ij1}}+...]$
-     - $\frac{\partial \Sigma_{l2}}{\partial w_{ij1}}= w_{jl2}\frac{\partial \varphi_{j1}}{\partial w_{ij1}}$
-     - $\frac{\varphi_{j1}}{\partial w_{ij1}}=\frac{\partial f_1( \Sigma_{j1})}{\partial \Sigma_{j1}}\frac{\partial \Sigma_{j1}}{\partial w_{ij1}}$; $\frac{\partial \Sigma_{j1}}{\partial w_{0j1}}=1$ or $\frac{\partial \Sigma_{j1}}{\partial w_{ij1}}=x_i; i\neq 0$
-- final result:
-     - $\frac{\partial w_{ij1}}{\partial t}=[\Sigma_{k}( T_k-\varphi_{ok})][\frac{\partial f_2( \Sigma_{j2})}{\partial \Sigma_{12}} \cdot  w_{j12}+w_{j22} \cdot\frac{\partial f_2( \Sigma_{22})}{\partial \Sigma_{22}}+...]\cdot\frac{\partial f_1( \Sigma_{j1})}{\partial \Sigma_{j1}}\cdot\frac{\partial \Sigma_{j1}}{\partial w_{ij1}}$
+<!-- - continue the chain rule from the previous result: -->
+<!--      - $\frac{\partial w_{ij1}}{\partial t}=[\Sigma_{k}( T_k-\varphi_{ok})][\frac{\partial f_2( \Sigma_{j2})}{\partial \Sigma_{12}} \cdot \frac{\partial \Sigma_{12}}{\partial w_{ij1}}+\frac{\partial f_2( \Sigma_{22})}{\partial \Sigma_{22}} \cdot \frac{\partial \Sigma_{22}}{\partial w_{ij1}}+\frac{\partial f_2( \Sigma_{32})}{\partial \Sigma_{32}} \cdot \frac{\partial \Sigma_{32}}{\partial w_{ij1}}+...]$ -->
+<!--      - $\frac{\partial \Sigma_{l2}}{\partial w_{ij1}}= w_{jl2}\frac{\partial \varphi_{j1}}{\partial w_{ij1}}$ -->
+<!--      - $\frac{\varphi_{j1}}{\partial w_{ij1}}=\frac{\partial f_1( \Sigma_{j1})}{\partial \Sigma_{j1}}\frac{\partial \Sigma_{j1}}{\partial w_{ij1}}$; $\frac{\partial \Sigma_{j1}}{\partial w_{0j1}}=1$ or $\frac{\partial \Sigma_{j1}}{\partial w_{ij1}}=x_i; i\neq 0$ -->
+<!-- - final result: -->
+<!--      - $\frac{\partial w_{ij1}}{\partial t}=[\Sigma_{k}( T_k-\varphi_{ok})][\frac{\partial f_2( \Sigma_{j2})}{\partial \Sigma_{12}} \cdot  w_{j12}+w_{j22} \cdot\frac{\partial f_2( \Sigma_{22})}{\partial \Sigma_{22}}+...]\cdot\frac{\partial f_1( \Sigma_{j1})}{\partial \Sigma_{j1}}\cdot\frac{\partial \Sigma_{j1}}{\partial w_{ij1}}$ -->
        
 # Data in Machine Learning
 
@@ -151,8 +158,8 @@ $\frac{\partial E} {\partial w_{ijl} }=0$
     - **Text data**: "Hello world"  &rArr; `[101, 7592]` (token IDs)
 - Neural Networks  are defined by parameters:
     - $w_{ijl}$ -- weight $i$ in neuron $j$ in layer $l$
-    - GPT-4 $\approx$ 1.8 trillion parameters:
-         - 3.6 TB of memory
+    - GPT-4 $\approx$ 1.8 trillion parameters &rArr; 3.6 TB of memory
+         - Mixture of Experts model: only some parts active for a given token
          - $2\times N_{\textnormal{active param}}$ **FLOP** per token ($\approx 2\times 280 \times 10^{9}$)
          - for learning the requirements are much larger ($\approx 10^{25}$ **FLOP** and 13 trillion tokens)
 

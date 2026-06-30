@@ -1,7 +1,10 @@
 ---
+# SPDX-FileCopyrightText: 2026 Hossein Firooz (Aalto University) and CSC - IT Center for Science Ltd. <www.csc.fi>
+#
+# SPDX-License-Identifier: CC-BY-4.0
+
 title:  Understanding GPU Computational Capabilities
-event:  CSC Summer School in High-Performance Computing 2025
-author: Hossein Firooz (FCAI / Aalto University)
+event:  CSC Summer School in High-Performance Computing 2026
 lang:   en
 ---
 
@@ -63,7 +66,7 @@ lang:   en
 
 # ML Parameters vs FLOP count
 
-- **No. Parameters** are static — they define the model size
+- **Number of parameters** is static — they define the model size
 - **FLOP count** depends on data:
     - Input size
     - Number of filters, etc
@@ -72,15 +75,16 @@ lang:   en
 
 # VRAM Usage Breakdown
 
-| Component            | Description                                  |
-|---------------------|----------------------------------------------|
-| Model Parameters     | Static memory for weights                    |
-| Gradients            | Stored during backpropagation                |
-| Optimizer States     | e.g., momentum/Adam stats                    |
-| Activations          | Largest source — intermediate tensors        |
-| Framework Overhead   | Memory allocator, workspace, caching         |
+| Component          | Description                                  |
+|--------------------|----------------------------------------------|
+| Model Parameters   | Static memory for weights                    |
+| Gradients          | Stored during backpropagation                |
+| Optimizer States   | e.g., momentum/Adam states                   |
+| Activations        | Intermediate tensors, varies with batch size |
+| Framework Overhead | Memory allocator, workspace, caching         |
 
 - Peak VRAM usage is dominated by activations in deep CNNs.
+- For LLMs it's the model size (affecting params, gradients, opt. states)
 
 # Example: ResNet-152 with CIFAR-100
 
@@ -103,14 +107,14 @@ total_params = sum(p.numel() for p in model.parameters())
 
 # VRAM Estimate: ResNet-152 + CIFAR-100 (224x224)
 
-| Component          | FP32 (approx) |
-|-------------------|---------------|
-| Parameters         | 240 MB        |
-| Adam  Optimizer    | 480 MB        |
-| Gradients          | 240 MB        |
-| Activations*       | ~180 MB       |
-| Overhead           | ~1 GB         |
-| **Total**          | ~2 GB         |
+| Component       | FP32 (approx)           |
+|-----------------|-------------------------|
+| Parameters      | 240 MB                  |
+| Adam  Optimizer | 480 MB                  |
+| Gradients       | 240 MB                  |
+| Activations*    | ~180 MB (for one image) |
+| Overhead        | ~1 GB                   |
+| **Total**       | ~2 GB                   |
 
 - For `batch_size=128` VRAM is ~24 GB
 
